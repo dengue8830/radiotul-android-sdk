@@ -48,25 +48,25 @@ repositories {
     maven {
         url "https://jitpack.io"
     }
-    jcenter()
+//    jcenter()
 }
 
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.2'
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
-    }
-}
-
-allprojects {
-    repositories {
-        jcenter()
-    }
-}
+//buildscript {
+//    repositories {
+//        jcenter()
+//    }
+//    dependencies {
+//        classpath 'com.android.tools.build:gradle:2.2.2'
+//        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+//        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
+//    }
+//}
+//
+//allprojects {
+//    repositories {
+//        jcenter()
+//    }
+//}
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
