@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/RadiotulSdk.iml" filepath="$PROJECT_DIR$/RadiotulSdk.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/radiotul-android-sdk.iml" filepath="$PROJECT_DIR$/radiotul-android-sdk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/radiotul-sdk/radiotul-sdk.iml" filepath="$PROJECT_DIR$/radiotul-sdk/radiotul-sdk.iml" />
     </modules>
   </component>
 </project>

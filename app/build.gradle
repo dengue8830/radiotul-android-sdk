@@ -1,30 +1,4 @@
-apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
-apply plugin: 'com.jfrog.bintray'
-
-ext {
-    bintrayRepo = 'radiotulsdk'
-    bintrayName = 'radiotulsdk'
-
-    publishedGroupId = 'com.amla'
-    libraryName = 'radiotulsdk'
-    artifact = 'radiotul-sdk'
-
-    libraryDescription = 'SDK for the RadioTul platform'
-
-    siteUrl = 'https://github.com/dengue8830/radiotul-android-sdk'
-    gitUrl = 'https://github.com/dengue8830/radiotul-android-sdk.git'
-
-    libraryVersion = '0.1.0'
-
-    developerId = 'dengue8830'
-    developerName = 'David Rearte'
-    developerEmail = 'dengue8830@gmail.com'
-
-    licenseName = 'The Apache Software License, Version 2.0'
-    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-    allLicenses = ["Apache-2.0"]
-}
+apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 24
@@ -57,20 +31,4 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:24.2.1'
     testCompile 'junit:junit:4.12'
-
-    //bintray
-//    classpath 'com.android.tools.build:gradle:1.3.0'
-//    classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.4'
-//    classpath 'com.github.dcendents:android-maven-gradle-plugin:1.3'
-
-    //signalr
-    compile files('libs/signalr-client-sdk-android-fixed.jar')
-    compile files('libs/signalr-client-sdk-fixed.jar')
-    compile files('libs/signalr-client-sdk-android-fixed.jar')
-    //http
-    compile 'com.android.volley:volley:1.0.0'
 }
-
-//Para que se pueda subir a bintray
-apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
-apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
