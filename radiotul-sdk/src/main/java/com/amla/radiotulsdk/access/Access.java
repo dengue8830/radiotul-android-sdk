@@ -40,22 +40,18 @@ public class Access {
         final JsonObjectRequest jsonDestacados = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                User user;
-
                 try {
-                    user = decodeUser(response, false);
+                    signIn.onSuccess(decodeUser(response, false));
+                } catch (UserDoesntExistsException e){
+                    Log.e(TAG, e);
+                    signIn.onUserNotFound();
+                    return;
                 } catch (JSONException e) {
                     Log.e(TAG, "Something went wrong parsing the response of the sdk's API. It's our fault, please contact us to fix it soporteradiotul@amla.com.ar");
                     signIn.onUnexpectedError();
                     signIn.onError();
                     return;
-                } catch (SignInWorngDataException e){
-                    Log.e(TAG, e);
-                    signIn.onWrongData();
-                    return;
                 }
-
-                signIn.onSuccess(user);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -69,9 +65,109 @@ public class Access {
         RadiotulSdk.getInstance().startRequest(jsonDestacados);
     }
 
-    public static void signUp(boolean socialLogin,
+    /**
+     * se usa despues de loguearse con facebook
+     * @param email
+     * @param pass
+     * @param signIn
+     * @param firstName
+     * @param lastName
+     * @param socialId
+     * @param facebookToken
+     * @param sex
+     * @param dni
+     * @param parsedBirthday
+     * @param password
+     * @param phone
+     * @param phoneCompanyId
+     */
+    public static void signInOrSignUpWithFacebookData(@NonNull final String email,
+                                                      @NonNull String pass,
+                                                      @NonNull final RadiotulResponse.SignIn signIn,
+                                                      @NonNull final String firstName,
+                                                      @NonNull final String lastName,
+                                                      final String socialId,
+                                                      final String facebookToken,
+                                                      final String sex,
+                                                      final String dni,
+                                                      final String parsedBirthday,
+                                                      final String password,
+                                                      final String phone,
+                                                      final int phoneCompanyId) {
+        //Primero nos intentamos loguear en radiotul
+        String url = Constants.API_SIGN_IN
+                + "?idEmpresa="
+                + RadiotulSdk.getInstance().getCompanyId()
+                + "&loginSocial="
+                + true
+                + "&idSocial="
+                + socialId
+                + "&email="
+                + email
+                + "&contrasenia="
+                + pass;
+
+        final JsonObjectRequest jsonDestacados = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    signIn.onSuccess(decodeUser(response, false));
+                } catch (UserDoesntExistsException e){
+                    //Si no existe porque es la primera vez que loguamos con facebook hay que crear un user en radiotul y luego loguearlo
+                    signUp(true, socialId, facebookToken, firstName, lastName, sex, dni,
+                            parsedBirthday, email, password, phone, phoneCompanyId,
+                            new RadiotulResponse.SignUp() {
+                                @Override
+                                public void onSuccess() {
+                                    signIn(email, password, signIn);
+                                }
+
+                                @Override
+                                public void onEmailAlreadyExists() {
+                                    //can't be
+                                    Log.e(TAG, "huu? email already exists? impossible! Contact us to fix this");
+                                    signIn.onUnexpectedError();
+                                    signIn.onError();
+                                }
+
+                                @Override
+                                public void onUnexpectedError() {
+                                    signIn.onUnexpectedError();
+                                    signIn.onError();
+                                }
+
+                                @Override
+                                public void onRequestError() {
+                                    signIn.onRequestError();
+                                    signIn.onError();
+                                }
+
+                                @Override
+                                public void onError() {
+                                    signIn.onError();
+                                }
+                            });
+                } catch (JSONException e) {
+                    Log.e(TAG, "Something went wrong parsing the response of the sdk's API. It's our fault, please contact us to fix it soporteradiotul@amla.com.ar");
+                    signIn.onUnexpectedError();
+                    signIn.onError();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, error);
+                signIn.onRequestError();
+                signIn.onError();
+            }
+        });
+
+        RadiotulSdk.getInstance().startRequest(jsonDestacados);
+    }
+
+    public static void signUp(boolean isSocialLogin,
                               String socialId,
-                              @NonNull String token,
+                              String token,
                               @NonNull String firstName,
                               @NonNull String lastName,
                               String sex,
@@ -90,7 +186,7 @@ public class Access {
                     .append("?idEmpresa=")
                     .append(RadiotulSdk.getInstance().getCompanyId())
                     .append("&loginSocial=")
-                    .append(socialLogin)
+                    .append(isSocialLogin)
                     .append("&idSocial=")
                     .append(socialId)//0, xxx
                     .append("&token=")
@@ -98,7 +194,7 @@ public class Access {
                     .append("&email=")
                     .append(email)
                     .append("&contrasenia=")
-                    .append(password)//pass, nada
+                    .append(password)//pass, email
                     .append("&idTipoUsuario=")
                     .append(Constants.AUDIENCE_USER_TYPE)
                     .append("&numeroTelefono=")
@@ -158,7 +254,7 @@ public class Access {
         RadiotulSdk.getInstance().startRequest(signupRequest);
     }
 
-    private static User decodeUser(JSONObject data, boolean loginFacebook) throws JSONException, SignInWorngDataException {
+    private static User decodeUser(JSONObject data, boolean loginFacebook) throws JSONException, UserDoesntExistsException {
         String userDataType;
 
         if (loginFacebook) {
@@ -168,7 +264,7 @@ public class Access {
         }
 
         if(!data.getBoolean(userDataType))
-            throw new SignInWorngDataException("email or pass was wrong");
+            throw new UserDoesntExistsException("email or pass was wrong");
 
         JSONObject usuarioJson = data.getJSONObject("jsonResult");
         User user = new User();

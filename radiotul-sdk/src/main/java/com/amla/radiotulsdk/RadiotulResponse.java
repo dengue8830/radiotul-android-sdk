@@ -11,7 +11,7 @@ public class RadiotulResponse {
         /** Called when a response is received and parsed succefully */
         public void onSuccess(User response);
         /** Called when a response is received but the signin data was wrong */
-        public void onWrongData();
+        public void onUserNotFound();
         /** Called when a response is received but something went wrong with our code like parsing errors*/
         public void onUnexpectedError();
         /** Called when there was a problem with the communication, like authorization or network status */
