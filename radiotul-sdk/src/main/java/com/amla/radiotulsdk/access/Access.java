@@ -25,7 +25,13 @@ import java.net.URLEncoder;
 public class Access {
     private static final String TAG = Access.class.getName();
 
-    public static void signIn(@NonNull String email, @NonNull String pass, @NonNull final RadiotulResponse.SignIn signIn) {
+    /**
+     * SignIn to RadioTul
+     * @param email
+     * @param password
+     * @param signInCallbacks
+     */
+    public static void signIn(@NonNull String email, @NonNull String password, @NonNull final RadiotulResponse.SignIn signInCallbacks) {
         String url = Constants.API_SIGN_IN
                 + "?idEmpresa="
                 + RadiotulSdk.getInstance().getCompanyId()
@@ -35,21 +41,21 @@ public class Access {
                 + "&email="
                 + email
                 + "&contrasenia="
-                + pass;
+                + password;
 
         final JsonObjectRequest jsonDestacados = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    signIn.onSuccess(decodeUser(response, false));
-                } catch (UserDoesntExistsException e){
+                    signInCallbacks.onSuccess(decodeUser(response, false));
+                } catch (UserNotFoundException e) {
                     Log.e(TAG, e);
-                    signIn.onUserNotFound();
+                    signInCallbacks.onUserNotFound();
                     return;
                 } catch (JSONException e) {
                     Log.e(TAG, "Something went wrong parsing the response of the sdk's API. It's our fault, please contact us to fix it soporteradiotul@amla.com.ar");
-                    signIn.onUnexpectedError();
-                    signIn.onError();
+                    signInCallbacks.onUnexpectedError();
+                    signInCallbacks.onError();
                     return;
                 }
             }
@@ -57,8 +63,8 @@ public class Access {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, error);
-                signIn.onRequestError();
-                signIn.onError();
+                signInCallbacks.onRequestError();
+                signInCallbacks.onError();
             }
         });
 
@@ -66,14 +72,14 @@ public class Access {
     }
 
     /**
-     * se usa despues de loguearse con facebook
+     * Login to RadioTul with the response data provided from facebook login
+     *
      * @param email
-     * @param pass
-     * @param signIn
+     * @param signInCallbacks
      * @param firstName
      * @param lastName
      * @param socialId
-     * @param facebookToken
+     * @param socialToken
      * @param sex
      * @param dni
      * @param parsedBirthday
@@ -81,19 +87,18 @@ public class Access {
      * @param phone
      * @param phoneCompanyId
      */
-    public static void signInOrSignUpWithFacebookData(@NonNull final String email,
-                                                      @NonNull String pass,
-                                                      @NonNull final RadiotulResponse.SignIn signIn,
-                                                      @NonNull final String firstName,
-                                                      @NonNull final String lastName,
-                                                      final String socialId,
-                                                      final String facebookToken,
-                                                      final String sex,
-                                                      final String dni,
-                                                      final String parsedBirthday,
-                                                      final String password,
-                                                      final String phone,
-                                                      final int phoneCompanyId) {
+    public static void signInWithFacebookLoginResponseData(@NonNull final String email,
+                                                           @NonNull final String password,
+                                                           @NonNull final RadiotulResponse.SignIn signInCallbacks,
+                                                           @NonNull final String firstName,
+                                                           @NonNull final String lastName,
+                                                           final String socialId,
+                                                           final String socialToken,
+                                                           final String sex,
+                                                           final String dni,
+                                                           final String parsedBirthday,
+                                                           final String phone,
+                                                           final int phoneCompanyId) {
         //Primero nos intentamos loguear en radiotul
         String url = Constants.API_SIGN_IN
                 + "?idEmpresa="
@@ -105,79 +110,127 @@ public class Access {
                 + "&email="
                 + email
                 + "&contrasenia="
-                + pass;
+                + password;
 
         final JsonObjectRequest jsonDestacados = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    signIn.onSuccess(decodeUser(response, false));
-                } catch (UserDoesntExistsException e){
+                    signInCallbacks.onSuccess(decodeUser(response, false));
+                } catch (UserNotFoundException e) {
                     //Si no existe porque es la primera vez que loguamos con facebook hay que crear un user en radiotul y luego loguearlo
-                    signUp(true, socialId, facebookToken, firstName, lastName, sex, dni,
+                    signUp(true, socialId, socialToken, firstName, lastName, sex, dni,
                             parsedBirthday, email, password, phone, phoneCompanyId,
                             new RadiotulResponse.SignUp() {
                                 @Override
                                 public void onSuccess() {
-                                    signIn(email, password, signIn);
+                                    signIn(email, password, signInCallbacks);
                                 }
 
                                 @Override
                                 public void onEmailAlreadyExists() {
                                     //can't be
                                     Log.e(TAG, "huu? email already exists? impossible! Contact us to fix this");
-                                    signIn.onUnexpectedError();
-                                    signIn.onError();
+                                    signInCallbacks.onUnexpectedError();
+                                    signInCallbacks.onError();
                                 }
 
                                 @Override
                                 public void onUnexpectedError() {
-                                    signIn.onUnexpectedError();
-                                    signIn.onError();
+                                    signInCallbacks.onUnexpectedError();
+                                    signInCallbacks.onError();
                                 }
 
                                 @Override
                                 public void onRequestError() {
-                                    signIn.onRequestError();
-                                    signIn.onError();
+                                    signInCallbacks.onRequestError();
+                                    signInCallbacks.onError();
                                 }
 
                                 @Override
                                 public void onError() {
-                                    signIn.onError();
+                                    signInCallbacks.onError();
                                 }
                             });
                 } catch (JSONException e) {
                     Log.e(TAG, "Something went wrong parsing the response of the sdk's API. It's our fault, please contact us to fix it soporteradiotul@amla.com.ar");
-                    signIn.onUnexpectedError();
-                    signIn.onError();
+                    signInCallbacks.onUnexpectedError();
+                    signInCallbacks.onError();
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, error);
-                signIn.onRequestError();
-                signIn.onError();
+                signInCallbacks.onRequestError();
+                signInCallbacks.onError();
             }
         });
 
         RadiotulSdk.getInstance().startRequest(jsonDestacados);
     }
 
-    public static void signUp(boolean isSocialLogin,
-                              String socialId,
-                              String token,
-                              @NonNull String firstName,
-                              @NonNull String lastName,
-                              String sex,
-                              String dni,
-                              String parsedBirthday,
-                              String email,
-                              String password,
-                              String phone,
-                              int phoneCompanyId,
-                              final RadiotulResponse.SignUp signUpCallbacks){
+    /**
+     * Simple no-social noSocialsignUp to RadioTul
+     * Use this if you are register the user from your own form
+     * otherwise use signInWithFacebookLoginResponseData
+     *
+     * @param firstName
+     * @param lastName
+     * @param sex
+     * @param dni
+     * @param parsedBirthday
+     * @param email
+     * @param password
+     * @param phone
+     * @param phoneCompanyId
+     * @param signUpCallbacks
+     */
+    public static void noSocialsignUp(@NonNull String firstName,
+                                      @NonNull String lastName,
+                                      @NonNull String sex,
+                                      String dni,
+                                      @NonNull String parsedBirthday,
+                                      @NonNull String email,
+                                      @NonNull String password,
+                                      String phone,
+                                      int phoneCompanyId,
+                                      @NonNull final RadiotulResponse.SignUp signUpCallbacks){
+
+        signUp(true, "0", "0", firstName, lastName, sex, dni, parsedBirthday, email, password, phone, phoneCompanyId, signUpCallbacks);
+    }
+
+    /**
+     * Full SignUp method to RadioTul
+     * TODO: check the date format
+     *
+     * @param isSocialLogin was logged in with a social network
+     * @param socialId social network's id provided by their signIn
+     * @param socialToken facebook token provided by his signIn
+     * @param firstName
+     * @param lastName
+     * @param sex
+     * @param dni
+     * @param parsedBirthday fomrmat: yyyy-MM-dd
+     * @param email
+     * @param password
+     * @param phone
+     * @param phoneCompanyId
+     * @param signUpCallbacks
+     */
+    private static void signUp(boolean isSocialLogin,
+                               String socialId,
+                               String socialToken,
+                               @NonNull String firstName,
+                               @NonNull String lastName,
+                               @NonNull String sex,
+                               String dni,
+                               @NonNull String parsedBirthday,
+                               @NonNull String email,
+                               @NonNull String password,
+                               String phone,
+                               Integer phoneCompanyId,
+                               @NonNull final RadiotulResponse.SignUp signUpCallbacks) {
 
         StringBuilder urlGET = new StringBuilder();
 
@@ -188,9 +241,9 @@ public class Access {
                     .append("&loginSocial=")
                     .append(isSocialLogin)
                     .append("&idSocial=")
-                    .append(socialId)//0, xxx
+                    .append(socialId)
                     .append("&token=")
-                    .append(token)//0, xxx
+                    .append(socialToken)
                     .append("&email=")
                     .append(email)
                     .append("&contrasenia=")
@@ -198,11 +251,11 @@ public class Access {
                     .append("&idTipoUsuario=")
                     .append(Constants.AUDIENCE_USER_TYPE)
                     .append("&numeroTelefono=")
-                    .append(phone)//tel, nada
+                    .append(phone != null ? phone : "")
                     .append("&softwareVersion=")
                     .append(Build.VERSION.RELEASE)//TODO: esto lo puedo saber desde la lib? o lo tengo que pedir al inicializar el sdk?
                     .append("&operador=")
-                    .append(phoneCompanyId)//phoneCompanyId, nada
+                    .append(phoneCompanyId != null ? phoneCompanyId : "")
                     .append("&nombre=")
                     .append(URLEncoder.encode(firstName, "UTF-8"))
                     .append("&apellido=")
@@ -212,7 +265,7 @@ public class Access {
                     .append("&sexo=")
                     .append(sex)
                     .append("&dni=")
-                    .append(dni);
+                    .append(dni != null ? dni : "");
         } catch (UnsupportedEncodingException e) {
             Log.e(TAG, e);
             signUpCallbacks.onUnexpectedError();
@@ -226,12 +279,10 @@ public class Access {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.i("API_REGISTRAR_USUARIO", response.toString());
-
                         try {
-                            if (response.getBoolean("usuarioExiste")){
+                            if (response.getBoolean("usuarioExiste")) {
                                 signUpCallbacks.onEmailAlreadyExists();
-                                return;//usario ya existe
+                                return;
                             }
                         } catch (JSONException e) {
                             Log.e(TAG, e);
@@ -254,7 +305,7 @@ public class Access {
         RadiotulSdk.getInstance().startRequest(signupRequest);
     }
 
-    private static User decodeUser(JSONObject data, boolean loginFacebook) throws JSONException, UserDoesntExistsException {
+    private static User decodeUser(JSONObject data, boolean loginFacebook) throws JSONException, UserNotFoundException {
         String userDataType;
 
         if (loginFacebook) {
@@ -263,25 +314,25 @@ public class Access {
             userDataType = "usuario";
         }
 
-        if(!data.getBoolean(userDataType))
-            throw new UserDoesntExistsException("email or pass was wrong");
+        if (!data.getBoolean(userDataType))
+            throw new UserNotFoundException("email or pass was wrong");
 
-        JSONObject usuarioJson = data.getJSONObject("jsonResult");
+        JSONObject userJson = data.getJSONObject("jsonResult");
         User user = new User();
-        user.setUserId(usuarioJson.getInt("Id"));
-        user.setSocialLoginId(usuarioJson.getInt("IdLoginSocial"));
-        user.setSocialId(usuarioJson.getString("IdSocial"));
-        user.setProfileId(Integer.parseInt(usuarioJson.getString("IdPerfil")));
-        user.setFirstName(usuarioJson.getString("Nombre"));
-        user.setLastName(usuarioJson.getString("Apellido"));
-        user.setEmail(usuarioJson.getString("Email"));
-        user.setSex(usuarioJson.getString("Sexo"));
-        user.setDni(usuarioJson.getString("Dni"));
-        user.setParsedBirthDay(usuarioJson.getString("FechaNacimiento"));
-        user.setPhoneCompany(usuarioJson.getString("Operador"));
-        user.setPhone(usuarioJson.getString("NumeroTelefono"));
-        user.setProfilePictureUrl(usuarioJson.getString("UrlFotoPerfil"));
+        user.setUserId(userJson.getInt("Id"));
+        user.setRadiotulSocialLoginId(userJson.getInt("IdLoginSocial"));
+        user.setSocialId(userJson.getString("IdSocial"));
+        user.setProfileId(Integer.parseInt(userJson.getString("IdPerfil")));
+        user.setFirstName(userJson.getString("Nombre"));
+        user.setLastName(userJson.getString("Apellido"));
+        user.setEmail(userJson.getString("Email"));
+        user.setSex(userJson.getString("Sexo"));
+        user.setDni(userJson.getString("Dni"));
+        user.setParsedBirthDay(userJson.getString("FechaNacimiento"));
+        user.setPhoneCompany(userJson.getString("Operador"));
+        user.setPhone(userJson.getString("NumeroTelefono"));
+        user.setProfilePictureUrl(userJson.getString("UrlFotoPerfil"));
 
-        return  user;
+        return user;
     }
 }

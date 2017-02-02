@@ -6,11 +6,13 @@ package com.amla.radiotulsdk.access;
 
 public class User {
     private int userId;
-    //TODO: Esto que es?
-    private int socialLoginId;
-    //TODO: Esto debe ser string? creo que si porque creo que es el uuid que te da facebook
+    /** The id for the RadioTul's social login register */
+    private int radiotulSocialLoginId;
+    /** The id of the social network user account */
     private String socialId;
-    private String token;
+    /** Token of the user's social network account */
+    private String socialToken;
+    /** The id of the profile on RadioTul account */
     private int profileId;
     private String firstName;
     private String lastName;
@@ -18,18 +20,21 @@ public class User {
     private String password;
     private String phone;
     private String sex;
+    /** Unique identifier for the person. This key is provided by the country's people register of the user */
     private String dni;
+    /** Birthday on format: yyyy-MM-dd */
     private String parsedBirthDay;
+    /** RadioTul's url to retrive the user's profile picture */
     private String profilePictureUrl;
     private String phoneCompany;
 
     public User(){}
 
-    public User(int userId, int socialLoginId, String socialId, String token, int profileId, String firstName, String lastName, String email, String password, String phone, String sex, String dni, String parsedBirthDay, String profilePictureUrl, String phoneCompany) {
+    public User(int userId, int radiotulSocialLoginId, String socialId, String token, int profileId, String firstName, String lastName, String email, String password, String phone, String sex, String dni, String parsedBirthDay, String profilePictureUrl, String phoneCompany) {
         this.userId = userId;
-        this.socialLoginId = socialLoginId;
+        this.radiotulSocialLoginId = radiotulSocialLoginId;
         this.socialId = socialId;
-        this.token = token;
+        this.socialToken = token;
         this.profileId = profileId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -51,12 +56,12 @@ public class User {
         this.userId = userId;
     }
 
-    public int getSocialLoginId() {
-        return socialLoginId;
+    public int getRadiotulSocialLoginId() {
+        return radiotulSocialLoginId;
     }
 
-    public void setSocialLoginId(int socialLoginId) {
-        this.socialLoginId = socialLoginId;
+    public void setRadiotulSocialLoginId(int radiotulSocialLoginId) {
+        this.radiotulSocialLoginId = radiotulSocialLoginId;
     }
 
     public String getSocialId() {
@@ -67,12 +72,12 @@ public class User {
         this.socialId = socialId;
     }
 
-    public String getToken() {
-        return token;
+    public String getSocialToken() {
+        return socialToken;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setSocialToken(String socialToken) {
+        this.socialToken = socialToken;
     }
 
     public int getProfileId() {
