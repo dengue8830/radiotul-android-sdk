@@ -14,6 +14,7 @@ import com.android.volley.toolbox.Volley;
 
 public class RadiotulSdk {
     public static final String TAG = RadiotulSdk.class.getName();
+    public static boolean LOG_ENABLED = true;
     private Context mContext;
     private String mToken, mPackageName, mClientId;
     private long mCompanyId, mRadioId;
@@ -26,9 +27,9 @@ public class RadiotulSdk {
      * @param clientId
      * @param token
      */
-    public void initialize(@NonNull Context context, @NonNull String clientId, @NonNull String token, long companyId, long radioId){
+    public void initialize(@NonNull Context context, @NonNull String clientId, @NonNull String token, long companyId, long radioId, boolean logEnabled){
         if(mInstance == null)
-            mInstance = new RadiotulSdk(context, context.getApplicationContext().getPackageName(), clientId, token, companyId, radioId);
+            mInstance = new RadiotulSdk(context, context.getApplicationContext().getPackageName(), clientId, token, companyId, radioId, logEnabled);
     }
 
     /**
@@ -50,13 +51,14 @@ public class RadiotulSdk {
     /**
      * We prevent to instanciate the class out of it
      */
-    private RadiotulSdk(Context context, String packageName, String clientId, String token, long companyId, long radioId){
+    private RadiotulSdk(Context context, String packageName, String clientId, String token, long companyId, long radioId, boolean logEnabled){
         mContext = context;
         mToken = token;
         mClientId = clientId;
         mPackageName = packageName;
         mCompanyId = companyId;
         mRadioId = radioId;
+        LOG_ENABLED = logEnabled;
     }
 
     /**
@@ -78,6 +80,14 @@ public class RadiotulSdk {
     public <T> void startRequest(Request<T> req) {
         req.setTag(TAG);
         getRequestQueue().add(req);
+    }
+
+    public void enableLog(){
+        LOG_ENABLED = true;
+    }
+
+    public void disableLog(){
+        LOG_ENABLED = false;
     }
 
     public Context getContext() {
