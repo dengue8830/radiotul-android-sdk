@@ -1,5 +1,8 @@
 package com.amla.radiotulsdk.access;
 
+import android.os.Build;
+import android.support.annotation.NonNull;
+
 import com.amla.radiotulsdk.Constants;
 import com.amla.radiotulsdk.RadiotulResponse;
 import com.amla.radiotulsdk.RadiotulSdk;
@@ -12,6 +15,9 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 /**
  * Created by dengue8830 on 2/2/17.
  */
@@ -19,7 +25,7 @@ import org.json.JSONObject;
 public class Access {
     private static final String TAG = Access.class.getName();
 
-    public static void signIn(String email, String pass, final RadiotulResponse.SignIn signIn) {
+    public static void signIn(@NonNull String email, @NonNull String pass, @NonNull final RadiotulResponse.SignIn signIn) {
         String url = Constants.API_SIGN_IN
                 + "?idEmpresa="
                 + RadiotulSdk.getInstance().getCompanyId()
@@ -55,12 +61,101 @@ public class Access {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, error);
-                signIn.onConnectionError();
+                signIn.onRequestError();
                 signIn.onError();
             }
         });
 
         RadiotulSdk.getInstance().startRequest(jsonDestacados);
+    }
+
+    public static void signUp(boolean socialLogin,
+                              String socialId,
+                              @NonNull String token,
+                              @NonNull String firstName,
+                              @NonNull String lastName,
+                              String sex,
+                              String dni,
+                              String parsedBirthday,
+                              String email,
+                              String password,
+                              String phone,
+                              int phoneCompanyId,
+                              final RadiotulResponse.SignUp signUpCallbacks){
+
+        StringBuilder urlGET = new StringBuilder();
+
+        try {
+            urlGET.append(Constants.API_SIGN_UP)
+                    .append("?idEmpresa=")
+                    .append(RadiotulSdk.getInstance().getCompanyId())
+                    .append("&loginSocial=")
+                    .append(socialLogin)
+                    .append("&idSocial=")
+                    .append(socialId)//0, xxx
+                    .append("&token=")
+                    .append(token)//0, xxx
+                    .append("&email=")
+                    .append(email)
+                    .append("&contrasenia=")
+                    .append(password)//pass, nada
+                    .append("&idTipoUsuario=")
+                    .append(Constants.AUDIENCE_USER_TYPE)
+                    .append("&numeroTelefono=")
+                    .append(phone)//tel, nada
+                    .append("&softwareVersion=")
+                    .append(Build.VERSION.RELEASE)//TODO: esto lo puedo saber desde la lib? o lo tengo que pedir al inicializar el sdk?
+                    .append("&operador=")
+                    .append(phoneCompanyId)//phoneCompanyId, nada
+                    .append("&nombre=")
+                    .append(URLEncoder.encode(firstName, "UTF-8"))
+                    .append("&apellido=")
+                    .append(URLEncoder.encode(lastName, "UTF-8"))
+                    .append("&fechaNacimiento=")
+                    .append(parsedBirthday)
+                    .append("&sexo=")
+                    .append(sex)
+                    .append("&dni=")
+                    .append(dni);
+        } catch (UnsupportedEncodingException e) {
+            Log.e(TAG, e);
+            signUpCallbacks.onUnexpectedError();
+            signUpCallbacks.onError();
+            return;
+        }
+
+        final JsonObjectRequest signupRequest = new JsonObjectRequest(Request.Method.GET,
+                urlGET.toString(),
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.i("API_REGISTRAR_USUARIO", response.toString());
+
+                        try {
+                            if (response.getBoolean("usuarioExiste")){
+                                signUpCallbacks.onEmailAlreadyExists();
+                                return;//usario ya existe
+                            }
+                        } catch (JSONException e) {
+                            Log.e(TAG, e);
+                            signUpCallbacks.onUnexpectedError();
+                            signUpCallbacks.onError();
+                            return;
+                        }
+
+                        signUpCallbacks.onSuccess();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, error);
+                signUpCallbacks.onRequestError();
+                signUpCallbacks.onError();
+            }
+        });
+
+        RadiotulSdk.getInstance().startRequest(signupRequest);
     }
 
     private static User decodeUser(JSONObject data, boolean loginFacebook) throws JSONException, SignInWorngDataException {
