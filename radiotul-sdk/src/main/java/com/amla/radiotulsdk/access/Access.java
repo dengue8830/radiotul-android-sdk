@@ -47,7 +47,8 @@ public class Access {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    signInCallbacks.onSuccess(decodeUser(response, false));
+                    RadiotulSdk.getInstance().setUserLoggedIn(decodeUser(response, false));
+                    signInCallbacks.onSuccess(RadiotulSdk.getInstance().getUserLoggedIn());
                 } catch (UserNotFoundException e) {
                     Log.e(TAG, e);
                     signInCallbacks.onUserNotFound();
@@ -116,7 +117,8 @@ public class Access {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    signInCallbacks.onSuccess(decodeUser(response, false));
+                    RadiotulSdk.getInstance().setUserLoggedIn(decodeUser(response, false));
+                    signInCallbacks.onSuccess(RadiotulSdk.getInstance().getUserLoggedIn());
                 } catch (UserNotFoundException e) {
                     //Si no existe porque es la primera vez que loguamos con facebook hay que crear un user en radiotul y luego loguearlo
                     signUp(true, socialId, socialToken, firstName, lastName, sex, dni,

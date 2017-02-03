@@ -3,6 +3,7 @@ package com.amla.radiotulsdk;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.amla.radiotulsdk.access.User;
 import com.amla.radiotulsdk.volley.RadiotulHurlStack;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -20,6 +21,7 @@ public class RadiotulSdk {
     private long mCompanyId, mRadioId;
     private RequestQueue mRequestQueue;
     private static RadiotulSdk mInstance;
+    private User userLoggedIn;
 
     /**
      * Main method of the sdk. Implements singleton pattern
@@ -112,5 +114,13 @@ public class RadiotulSdk {
 
     public long getCompanyId() {
         return mCompanyId;
+    }
+
+    public User getUserLoggedIn() {
+        return userLoggedIn;
+    }
+
+    public void setUserLoggedIn(User userLoggedIn) {
+        this.userLoggedIn = userLoggedIn;
     }
 }
