@@ -24,13 +24,13 @@ import java.util.List;
 public class ModelParser {
 
     /**
-     * Verifica si esa clave existe y tiene valor para ese jsonobject
-     * @param jo objeto a revisar
-     * @param key clave a revisar
-     * @return true si existe y tiene valor, false en otro caso
+     * Check if that key exists and has value for that object
+     * @param jo object to check
+     * @param key key to check
+     * @return true if exists and has value
      * @throws JSONException
      */
-    private static boolean tieneValor(JSONObject jo, String key) throws JSONException{
+    private static boolean hasValue(JSONObject jo, String key) throws JSONException{
         return jo.has(key) && !jo.isNull(key);
     }
 
@@ -44,8 +44,8 @@ public class ModelParser {
             //Asumimos que si no estan presentes es porque no importa si no estan habilitados, o porque lo estan pero no hemos enviado esos valores
             //Esta excepcion se agrega para contemplar el caso cuando estamos viendo los prizes de los eventos ganados, estos prizes podrian no estar
             //vigentes pero aun asi se deben mostrar
-            boolean estado = tieneValor(joPremio, "Estado") ? joPremio.getBoolean("Estado") : true;
-            boolean estadoPremio = tieneValor(joPremio, "EstadoPremio") ? joPremio.getBoolean("EstadoPremio") : true;
+            boolean estado = hasValue(joPremio, "Estado") ? joPremio.getBoolean("Estado") : true;
+            boolean estadoPremio = hasValue(joPremio, "EstadoPremio") ? joPremio.getBoolean("EstadoPremio") : true;
 
             if (!estado || !estadoPremio)
                 continue;
@@ -60,7 +60,7 @@ public class ModelParser {
 
             List<String> imagenes = new ArrayList<>();
 
-            if (tieneValor(joPremio, "Imagenes")) {
+            if (hasValue(joPremio, "Imagenes")) {
                 JSONArray jaImagenes = joPremio.getJSONArray("Imagenes");
 
                 for (int j = 0; j < jaImagenes.length(); j++) {
@@ -98,29 +98,29 @@ public class ModelParser {
         event.setName(joEvento.getString("Titulo"));
         event.setDescription(joEvento.getString("Descripcion"));
 
-        if(tieneValor(joEvento, "NumeroConcursantes"))
+        if(hasValue(joEvento, "NumeroConcursantes"))
             event.setContestantsCount(joEvento.getInt("NumeroConcursantes"));
 
         event.setType(getTipoEvento(joEvento));
         event.setShows(getProgramas(joEvento));
         event.setTrivia(getTrivia(joEvento));
 
-        if(tieneValor(joEvento, "PremiosEvento"))
+        if(hasValue(joEvento, "PremiosEvento"))
             event.setPrizes(getPremios(joEvento.getJSONArray("PremiosEventos")));
         else
             event.setPrizes(new ArrayList<Prize>());
 
-        if(tieneValor(joEvento, "FechaGanado"))
+        if(hasValue(joEvento, "FechaGanado"))
             event.setParsedWonDate(joEvento.getString("FechaGanado"));
 
 //        event.setExpanded(false);//necesario para el viewholder
 //        //Es para llevar un control local. Ya que del server vienen solo los vigentes
 //        event.setFinalizado(false);
 
-        if(tieneValor(joEvento, "SegundosRestantes"))
+        if(hasValue(joEvento, "SegundosRestantes"))
             event.setSecondsRemaining((long) Math.floor(joEvento.getDouble("SegundosRestantes")));
 
-        if(tieneValor(joEvento, "EstoyParticipando"))
+        if(hasValue(joEvento, "EstoyParticipando"))
             event.setiAmParticipating(joEvento.getBoolean("EstoyParticipando"));
 
         return event;
@@ -129,7 +129,7 @@ public class ModelParser {
     public static List<Show> getProgramas(JSONObject joEvento) throws JSONException {
         List<Show> shows = new ArrayList<>();
 
-        if(!tieneValor(joEvento, "ProgramasSeleccionado"))
+        if(!hasValue(joEvento, "ProgramasSeleccionado"))
             return shows;
 
         JSONArray jaProgramas = joEvento.getJSONArray("ProgramasSeleccionado");
@@ -151,7 +151,7 @@ public class ModelParser {
     }
 
     public static EventType getTipoEvento(JSONObject joEvento) throws JSONException {
-        if(!tieneValor(joEvento, "EventType"))
+        if(!hasValue(joEvento, "EventType"))
             return null;
 
         JSONObject joTipoEvento = joEvento.getJSONObject("EventType");
@@ -164,7 +164,7 @@ public class ModelParser {
     }
 
     public static Trivia getTrivia(JSONObject joEvento) throws JSONException {
-        if(!tieneValor(joEvento, "Trivia"))
+        if(!hasValue(joEvento, "Trivia"))
             return null;
 
         JSONArray jaTrivia = joEvento.getJSONArray("Trivia");
@@ -224,6 +224,9 @@ public class ModelParser {
         show.setPhone(joPrograma.isNull("TelefonoMovil") ? "" : joPrograma.getString("TelefonoMovil"));
         show.setPhoneWithWhatsapp(joPrograma.getString("TelefonoConWhatsapp"));
         show.setSpeakerName(joPrograma.getString("Locutor"));
+
+        if(hasValue(joPrograma, "Trasmitiendo"))
+            show.setBeingBroadcastNow(joPrograma.getBoolean("Trasmitiendo"));
 
         return show;
     }

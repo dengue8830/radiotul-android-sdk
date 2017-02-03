@@ -16,6 +16,7 @@ public class Show {
     private String speakerName;
     private String phone;
     private String phoneWithWhatsapp;
+    private Boolean isBeingBroadcastNow;
 
     public String getName() {
         return name;
@@ -97,5 +98,13 @@ public class Show {
 
     public void setPhoneWithWhatsapp(String phoneWithWhatsapp) {
         this.phoneWithWhatsapp = phoneWithWhatsapp;
+    }
+
+    public Boolean getBeingBroadcastNow() {
+        return isBeingBroadcastNow;
+    }
+
+    public void setBeingBroadcastNow(Boolean beingBroadcastNow) {
+        isBeingBroadcastNow = beingBroadcastNow;
     }
 }
