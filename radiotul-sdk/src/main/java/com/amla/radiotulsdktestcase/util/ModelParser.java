@@ -34,7 +34,7 @@ public class ModelParser {
         return jo.has(key) && !jo.isNull(key);
     }
 
-    public static List<Prize> getPremios(JSONArray jaPremios) throws JSONException {
+    public static List<Prize> getPrizes(JSONArray jaPremios) throws JSONException {
         List<Prize> prizes = new ArrayList<>();
 
         for (int i = 0; i < jaPremios.length(); i++) {
@@ -75,11 +75,11 @@ public class ModelParser {
         return prizes;
     }
 
-    public static List<Event> toEvents(JSONArray eventsArray) throws JSONException{
+    public static List<Event> toEvents(JSONArray rawEvents) throws JSONException{
         List<Event> events = new ArrayList<>();
 
-        for (int i = 0; i < eventsArray.length(); i++) {
-            Event event = toEvento(eventsArray.getJSONObject(i));
+        for (int i = 0; i < rawEvents.length(); i++) {
+            Event event = toEvent(rawEvents.getJSONObject(i));
             events.add(event);
         }
 
@@ -92,7 +92,7 @@ public class ModelParser {
      * @return
      * @throws JSONException
      */
-    public static Event toEvento(JSONObject joEvento) throws JSONException {
+    public static Event toEvent(JSONObject joEvento) throws JSONException {
         Event event = new Event();
         event.setId(joEvento.getInt("Id"));
         event.setName(joEvento.getString("Titulo"));
@@ -106,7 +106,7 @@ public class ModelParser {
         event.setTrivia(getTrivia(joEvento));
 
         if(hasValue(joEvento, "PremiosEvento"))
-            event.setPrizes(getPremios(joEvento.getJSONArray("PremiosEventos")));
+            event.setPrizes(getPrizes(joEvento.getJSONArray("PremiosEventos")));
         else
             event.setPrizes(new ArrayList<Prize>());
 

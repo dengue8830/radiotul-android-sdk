@@ -101,7 +101,7 @@ public class EventsAPI {
      * Gets the events that the logged user has won but he doesn't see yet
      * @param callbacks
      */
-    public static void getMyNotSeenWonEvents(final RadiotulResponse.GetMyWonEventsNotSeen callbacks) {
+    public static void getMyNotSeenWonEvents(final RadiotulResponse.GetEvents callbacks) {
         final JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
                 Constants.GET_MY_NOT_SEEN_WON_EVENTS + "?idPerfil=" + RadiotulSdk.getInstance().getUserLoggedIn().getProfileId() + "&idEmpresa=" + RadiotulSdk.getInstance().getCompanyId(),
                 null,
@@ -155,7 +155,7 @@ public class EventsAPI {
      */
     public static void markWonEventsAsViwed(List<Event> events, final RadiotulResponse.SimpleCallback callbacks){
 
-        StringRequest request = new StringRequest(Request.Method.POST, Constants.MARK_WON_EVENTS_AS_VIWED+"?ids="+getStringIds(events),
+        StringRequest request = new StringRequest(Request.Method.POST, Constants.MARK_MY_WON_EVENTS_AS_VIWED +"?ids="+getStringIds(events),
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -197,5 +197,69 @@ public class EventsAPI {
         ids.replaceFirst(",", "");
 
         return ids;
+    }
+
+    /**
+     * Get the prizes of the event
+     * @param eventId
+     * @param callbacks
+     */
+    public static void getEventPrizes(long eventId, final RadiotulResponse.GetEventPrizes callbacks){
+        final JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
+                Constants.GET_EVENT_PRIZES+"?idEvento="+eventId,
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            callbacks.onSuccess(ModelParser.getPrizes(response.getJSONArray("result")));
+                        }catch (JSONException e){
+                            Log.e(TAG, e);
+                            callbacks.onUnexpectedError();
+                            callbacks.onError();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e(TAG, error);
+                        callbacks.onRequestError();
+                        callbacks.onError();
+                    }
+                }
+        );
+
+        RadiotulSdk.getInstance().startRequest(request);
+    }
+
+    /**
+     * Gets the events that the user has won
+     * @param callbacks
+     */
+    public static void getMyWonEvents(final RadiotulResponse.GetEvents callbacks){
+        final JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
+                Constants.GET_MY_WON_EVENTS + "?idPerfil=" + RadiotulSdk.getInstance().getUserLoggedIn().getProfileId() + "&idEmpresa=" + RadiotulSdk.getInstance().getCompanyId(),
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            callbacks.onSuccess(ModelParser.toEvents(response.getJSONArray("result")));
+                        } catch (JSONException e) {
+                            Log.e(TAG, e);
+                            callbacks.onUnexpectedError();
+                            callbacks.onError();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, error);
+                callbacks.onRequestError();
+                callbacks.onError();
+            }
+        });
+
+        RadiotulSdk.getInstance().startRequest(request);
     }
 }
