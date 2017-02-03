@@ -42,8 +42,9 @@ public class Access {
                 + email
                 + "&contrasenia="
                 + password;
+        Log.i(TAG, url);
 
-        final JsonObjectRequest jsonDestacados = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+        final JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
@@ -69,7 +70,7 @@ public class Access {
             }
         });
 
-        RadiotulSdk.getInstance().startRequest(jsonDestacados);
+        RadiotulSdk.getInstance().startRequest(request);
     }
 
     /**
@@ -321,7 +322,7 @@ public class Access {
 
         JSONObject userJson = data.getJSONObject("jsonResult");
         User user = new User();
-        user.setUserId(userJson.getInt("Id"));
+        user.setId(userJson.getInt("Id"));
         user.setRadiotulSocialLoginId(userJson.getInt("IdLoginSocial"));
         user.setSocialId(userJson.getString("IdSocial"));
         user.setProfileId(Integer.parseInt(userJson.getString("IdPerfil")));

@@ -24,7 +24,7 @@ public class RadiotulResponse {
     /** Callback interface for delivering parsed responses. */
     public interface SignIn extends RadioTulCallback {
         /** Called when a response is received and parsed succefully */
-        public void onSuccess(User response);
+        public void onSuccess(User userSignedIn);
         /** Called when a response is received but the signin data was wrong */
         public void onUserNotFound();
     }

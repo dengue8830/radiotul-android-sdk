@@ -5,7 +5,7 @@ package com.amla.radiotulsdk.access;
  */
 
 public class User {
-    private int userId;
+    private int id;
     /** The id for the RadioTul's social login register */
     private int radiotulSocialLoginId;
     /** The id of the social network user account */
@@ -30,8 +30,8 @@ public class User {
 
     public User(){}
 
-    public User(int userId, int radiotulSocialLoginId, String socialId, String token, int profileId, String firstName, String lastName, String email, String password, String phone, String sex, String dni, String parsedBirthDay, String profilePictureUrl, String phoneCompany) {
-        this.userId = userId;
+    public User(int id, int radiotulSocialLoginId, String socialId, String token, int profileId, String firstName, String lastName, String email, String password, String phone, String sex, String dni, String parsedBirthDay, String profilePictureUrl, String phoneCompany) {
+        this.id = id;
         this.radiotulSocialLoginId = radiotulSocialLoginId;
         this.socialId = socialId;
         this.socialToken = token;
@@ -48,12 +48,12 @@ public class User {
         this.phoneCompany = phoneCompany;
     }
 
-    public int getUserId() {
-        return userId;
+    public int getId() {
+        return id;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getRadiotulSocialLoginId() {

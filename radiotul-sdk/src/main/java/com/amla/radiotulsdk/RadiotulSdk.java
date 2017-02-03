@@ -18,7 +18,7 @@ public class RadiotulSdk {
     public static boolean LOG_ENABLED = true;
     private Context mContext;
     private String mToken, mPackageName, mClientId;
-    private long mCompanyId, mRadioId;
+    private long mCompanyId;
     private RequestQueue mRequestQueue;
     private static RadiotulSdk mInstance;
     private User userLoggedIn;
@@ -29,9 +29,9 @@ public class RadiotulSdk {
      * @param clientId
      * @param token
      */
-    public void initialize(@NonNull Context context, @NonNull String clientId, @NonNull String token, long companyId, long radioId, boolean logEnabled){
+    public static void initialize(@NonNull Context context, @NonNull String clientId, @NonNull String token, long companyId, boolean logEnabled){
         if(mInstance == null)
-            mInstance = new RadiotulSdk(context, context.getApplicationContext().getPackageName(), clientId, token, companyId, radioId, logEnabled);
+            mInstance = new RadiotulSdk(context, context.getPackageName(), clientId, token, companyId, logEnabled);
     }
 
     /**
@@ -53,13 +53,12 @@ public class RadiotulSdk {
     /**
      * We prevent to instanciate the class out of it
      */
-    private RadiotulSdk(Context context, String packageName, String clientId, String token, long companyId, long radioId, boolean logEnabled){
+    private RadiotulSdk(Context context, String packageName, String clientId, String token, long companyId, boolean logEnabled){
         mContext = context;
         mToken = token;
         mClientId = clientId;
         mPackageName = packageName;
         mCompanyId = companyId;
-        mRadioId = radioId;
         LOG_ENABLED = logEnabled;
     }
 
@@ -108,10 +107,6 @@ public class RadiotulSdk {
         return mClientId;
     }
 
-    public long getRadioId() {
-        return mRadioId;
-    }
-
     public long getCompanyId() {
         return mCompanyId;
     }
@@ -120,6 +115,7 @@ public class RadiotulSdk {
         return userLoggedIn;
     }
 
+    //TODO: no cualquiera deberia poder setear el usuario logueado, solo el metodo login
     public void setUserLoggedIn(User userLoggedIn) {
         this.userLoggedIn = userLoggedIn;
     }

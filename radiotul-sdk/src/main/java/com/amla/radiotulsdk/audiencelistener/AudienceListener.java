@@ -37,6 +37,7 @@ public class AudienceListener {
     private static boolean abort;
     private static final String TAG = AudienceListener.class.getName();
     private static final String USER_TYPE_APP = "APP";
+    private static int mRadioId;
 
     /**
      * Prepara la conexion
@@ -64,7 +65,7 @@ public class AudienceListener {
                 .append("&idEmpresa=")
                 .append(RadiotulSdk.getInstance().getCompanyId())
                 .append("&idRadio=")
-                .append(RadiotulSdk.getInstance().getRadioId());
+                .append(mRadioId);
 
         //Configuramos para usar esta plataforma
         Platform.loadPlatformComponent(new AndroidPlatformComponent());
@@ -192,11 +193,12 @@ public class AudienceListener {
     /**
      * Inica la comunicacion, al conectarse incrementara la audiencia
      */
-    public static void start() {
+    public static void start(Integer radioId) {
         if(!initialized)
             //TODO: Replace with AudienceListenerNotInitializedException but must be catcheable by runneable
             throw new RuntimeException("You must initialize the listener first!");
 
+        mRadioId = radioId;
         tryReconnect = true;
         abort = false;
         //Este metodo ya controla que no se pueda dar start varias veces seguidas o si ya esta conectado
