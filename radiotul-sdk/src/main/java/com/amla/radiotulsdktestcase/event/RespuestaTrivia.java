@@ -1,4 +1,4 @@
-package com.amla.radiotulsdktestcase.events;
+package com.amla.radiotulsdktestcase.event;
 
 public class RespuestaTrivia {
 

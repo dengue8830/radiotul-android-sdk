@@ -3,7 +3,7 @@ package com.amla.radiotulsdktestcase.message;
 import com.amla.radiotulsdktestcase.Constants;
 import com.amla.radiotulsdktestcase.RadiotulResponse;
 import com.amla.radiotulsdktestcase.RadiotulSdk;
-import com.amla.radiotulsdktestcase.events.CommentType;
+import com.amla.radiotulsdktestcase.event.CommentType;
 import com.amla.radiotulsdktestcase.util.Log;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -18,6 +18,12 @@ import java.util.Map;
  */
 
 public class MessageAPI {
+    /**
+     * Send a message to the show with the logged user as sender
+     * @param showId
+     * @param message
+     * @param callbacks
+     */
     private void sendMessageToShow(final long showId, final String message, final RadiotulResponse.SimpleCallback callbacks) {
         StringRequest postRequest = new StringRequest(Request.Method.POST, Constants.SEND_MESSAGE_API,
                 new Response.Listener<String>() {

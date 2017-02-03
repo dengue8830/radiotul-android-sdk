@@ -1,10 +1,10 @@
-package com.amla.radiotulsdktestcase.events;
+package com.amla.radiotulsdktestcase.event;
 
 /**
  * Created by dengue8830 on 28/10/16.
  */
 public class Show {
-    private Integer id;
+    private Long id;
     private String name;
     private String description;
     /** 24hs format */
@@ -25,11 +25,11 @@ public class Show {
         this.name = nombrePrograma;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

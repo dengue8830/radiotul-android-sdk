@@ -1,7 +1,8 @@
 package com.amla.radiotulsdktestcase;
 
 import com.amla.radiotulsdktestcase.access.User;
-import com.amla.radiotulsdktestcase.events.Event;
+import com.amla.radiotulsdktestcase.event.Event;
+import com.amla.radiotulsdktestcase.event.Show;
 
 import java.util.List;
 
@@ -46,5 +47,9 @@ public class RadiotulResponse {
 
     public interface GetMyWonEventsNotSeen extends RadioTulCallback {
         public void onSuccess(List<Event> events);
+    }
+
+    public interface GetWeekShowSchedule extends RadioTulCallback {
+        public void onSuccess(List<List> weekSchedule);
     }
 }

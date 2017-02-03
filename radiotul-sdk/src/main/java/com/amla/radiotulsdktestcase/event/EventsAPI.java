@@ -1,4 +1,4 @@
-package com.amla.radiotulsdktestcase.events;
+package com.amla.radiotulsdktestcase.event;
 
 import com.amla.radiotulsdktestcase.Constants;
 import com.amla.radiotulsdktestcase.RadiotulResponse;
@@ -16,7 +16,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +23,8 @@ import java.util.Map;
 
 /**
  * Created by dengue8830 on 2/2/17.
+ *
+ * Wrapper class to manage the API request and responses
  */
 
 public class EventsAPI {
@@ -61,6 +62,11 @@ public class EventsAPI {
         RadiotulSdk.getInstance().startRequest(request);
     }
 
+    /**
+     * SingUp the logged user to one event
+     * @param eventId
+     * @param callbacks
+     */
     public static void signUpOnEvent(final int eventId, final RadiotulResponse.SimpleCallback callbacks) {
         StringRequest postRequest = new StringRequest(Request.Method.POST, Constants.SIGN_UP_ON_EVENT_API,
                 new Response.Listener<String>() {
@@ -91,6 +97,10 @@ public class EventsAPI {
         RadiotulSdk.getInstance().startRequest(postRequest);
     }
 
+    /**
+     * Gets the events that the logged user has won but he doesn't see yet
+     * @param callbacks
+     */
     public static void getMyNotSeenWonEvents(final RadiotulResponse.GetMyWonEventsNotSeen callbacks) {
         final JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
                 Constants.GET_MY_NOT_SEEN_WON_EVENTS + "?idPerfil=" + RadiotulSdk.getInstance().getUserLoggedIn().getProfileId() + "&idEmpresa=" + RadiotulSdk.getInstance().getCompanyId(),
@@ -134,6 +144,15 @@ public class EventsAPI {
         RadiotulSdk.getInstance().startRequest(request);
     }
 
+    /**
+     * Mark events won as seen. This method must be used when the logged user has seen the events
+     * retreived from the api getMyNotSeenWonEvents
+     * Only the event's id is needed but we request you the model list because is more easy if you send
+     * the list retreived from the api metioned above
+     * TODO: poner el link a el metodo getMyNotSeenWonEvents
+     * @param events to mark as seen
+     * @param callbacks
+     */
     public static void markWonEventsAsViwed(List<Event> events, final RadiotulResponse.SimpleCallback callbacks){
 
         StringRequest request = new StringRequest(Request.Method.POST, Constants.MARK_WON_EVENTS_AS_VIWED+"?ids="+getStringIds(events),
@@ -162,6 +181,11 @@ public class EventsAPI {
         RadiotulSdk.getInstance().startRequest(request);
     }
 
+    /**
+     * Private method to cast the events to the requested format
+     * @param events
+     * @return
+     */
     private static String getStringIds(List<Event> events){
         String ids = "";
 

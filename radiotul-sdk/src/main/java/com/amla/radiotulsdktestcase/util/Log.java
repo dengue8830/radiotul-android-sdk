@@ -5,6 +5,8 @@ import com.android.volley.VolleyError;
 
 /**
  * Created by dengue8830 on 2/2/17.
+ *
+ * Utility class to manage the log
  */
 
 public class Log {

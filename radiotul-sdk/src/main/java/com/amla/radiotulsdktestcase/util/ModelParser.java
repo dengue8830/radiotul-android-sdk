@@ -1,12 +1,12 @@
 package com.amla.radiotulsdktestcase.util;
 
-import com.amla.radiotulsdktestcase.events.Event;
-import com.amla.radiotulsdktestcase.events.EventType;
-import com.amla.radiotulsdktestcase.events.PreguntaTrivia;
-import com.amla.radiotulsdktestcase.events.Prize;
-import com.amla.radiotulsdktestcase.events.Show;
-import com.amla.radiotulsdktestcase.events.RespuestaTrivia;
-import com.amla.radiotulsdktestcase.events.Trivia;
+import com.amla.radiotulsdktestcase.event.Event;
+import com.amla.radiotulsdktestcase.event.EventType;
+import com.amla.radiotulsdktestcase.event.PreguntaTrivia;
+import com.amla.radiotulsdktestcase.event.Prize;
+import com.amla.radiotulsdktestcase.event.Show;
+import com.amla.radiotulsdktestcase.event.RespuestaTrivia;
+import com.amla.radiotulsdktestcase.event.Trivia;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,6 +17,8 @@ import java.util.List;
 
 /**
  * Created by dengue8830 on 2/2/17.
+ *
+ * Utility class to all the parse model work of the APIs
  */
 
 public class ModelParser {
@@ -139,7 +141,7 @@ public class ModelParser {
                 continue;
 
             Show show = new Show();
-            show.setId(joPrograma.getInt("IdPrograma"));
+            show.setId(joPrograma.getLong("IdPrograma"));
             show.setName(joPrograma.getString("NombrePrograma"));
 
             shows.add(show);
@@ -207,5 +209,22 @@ public class ModelParser {
         trivia.setPreguntasTrivia(preguntasTrivia);
 
         return trivia;
+    }
+
+    public static Show toShow(JSONObject joPrograma) throws JSONException{
+        Show show = new Show();
+
+        show.setId(joPrograma.getLong("IdPrograma"));
+        show.setName(joPrograma.getString("Nombre"));
+        show.setStartTime(joPrograma.getString("HoraInicio").substring(0, 5));
+        show.setEndTime(joPrograma.getString("HoraFin").substring(0, 5));
+        show.setDescription(joPrograma.getString("Descripcion"));
+        show.setFacebookUrl(joPrograma.getString("Facebook"));
+        show.setTwitterUrl(joPrograma.getString("Twitter"));
+        show.setPhone(joPrograma.isNull("TelefonoMovil") ? "" : joPrograma.getString("TelefonoMovil"));
+        show.setPhoneWithWhatsapp(joPrograma.getString("TelefonoConWhatsapp"));
+        show.setSpeakerName(joPrograma.getString("Locutor"));
+
+        return show;
     }
 }

@@ -1,4 +1,4 @@
-package com.amla.radiotulsdktestcase.events;
+package com.amla.radiotulsdktestcase.event;
 
 /**
  * Created by dengue8830 on 28/10/16.
