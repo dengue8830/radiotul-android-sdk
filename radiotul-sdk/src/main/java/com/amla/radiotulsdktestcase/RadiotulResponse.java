@@ -29,10 +29,12 @@ public class RadiotulResponse {
         public void onUserNotFound();
     }
 
-    /** Callback interface for delivering parsed responses. */
-    public interface SignUp extends RadioTulCallback {
-        /** Called when a response is received and parsed succefully */
+    public interface SimpleCallback extends RadioTulCallback {
         public void onSuccess();
+    }
+
+    /** Callback interface for delivering parsed responses. */
+    public interface SignUp extends SimpleCallback {
         /** Called when a response is received but the signin data was wrong */
         public void onEmailAlreadyExists();
     }
@@ -42,7 +44,7 @@ public class RadiotulResponse {
         public void onSuccess(List<Event> events);
     }
 
-    public interface SignUpOnEvent extends RadioTulCallback {
-        public void onSuccess();
+    public interface GetMyWonEventsNotSeen extends RadioTulCallback {
+        public void onSuccess(List<Event> events);
     }
 }

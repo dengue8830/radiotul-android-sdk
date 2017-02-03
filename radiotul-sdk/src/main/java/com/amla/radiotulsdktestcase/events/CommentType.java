@@ -7,7 +7,7 @@ import java.util.List;
  * Created by dengue8830 on 2/2/17.
  */
 
-public class TipoComentario {
+public class CommentType {
     private int id;
     private String tipo;
 
@@ -31,24 +31,24 @@ public class TipoComentario {
         this.tipo = tipo;
     }
 
-    public TipoComentario(int id, String tipo) {
+    public CommentType(int id, String tipo) {
         this.id = id;
         this.tipo = tipo;
     }
 
-    public static List<TipoComentario> getTipoComentarios() {
-        List<TipoComentario> tiposComentarios = new ArrayList<>();
+    public static List<CommentType> getTipoComentarios() {
+        List<CommentType> tiposComentarios = new ArrayList<>();
         //Primero esta opcion, porque las otras deben ser elegidas expresamente porque son un mayor impacto en las estadisticas
-        tiposComentarios.add(new TipoComentario(ID_OTRO, "Otro"));
-        tiposComentarios.add(new TipoComentario(ID_BUENOS_COMENTARIOS, "Buenos Comentarios"));
-        tiposComentarios.add(new TipoComentario(ID_QUEJAS, "Quejas"));
+        tiposComentarios.add(new CommentType(ID_OTRO, "Otro"));
+        tiposComentarios.add(new CommentType(ID_BUENOS_COMENTARIOS, "Buenos Comentarios"));
+        tiposComentarios.add(new CommentType(ID_QUEJAS, "Quejas"));
         return tiposComentarios;
     }
 
     public static List<String> getNombresTipoComentarios() {
         List<String> nombres = new ArrayList<>();
-        for (TipoComentario tipoComentario : getTipoComentarios()) {
-            nombres.add(tipoComentario.getNombre());
+        for (CommentType commentType : getTipoComentarios()) {
+            nombres.add(commentType.getNombre());
         }
         return nombres;
     }

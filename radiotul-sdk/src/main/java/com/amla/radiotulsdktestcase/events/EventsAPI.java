@@ -11,10 +11,15 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -56,7 +61,7 @@ public class EventsAPI {
         RadiotulSdk.getInstance().startRequest(request);
     }
 
-    private void signUpOnEvent(final int eventId, final RadiotulResponse.SignUpOnEvent callbacks) {
+    public static void signUpOnEvent(final int eventId, final RadiotulResponse.SimpleCallback callbacks) {
         StringRequest postRequest = new StringRequest(Request.Method.POST, Constants.SIGN_UP_ON_EVENT_API,
                 new Response.Listener<String>() {
                     @Override
@@ -84,5 +89,89 @@ public class EventsAPI {
         };
 
         RadiotulSdk.getInstance().startRequest(postRequest);
+    }
+
+    public static void getMyNotSeenWonEvents(final RadiotulResponse.GetMyWonEventsNotSeen callbacks) {
+        final JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
+                Constants.GET_MY_NOT_SEEN_WON_EVENTS + "?idPerfil=" + RadiotulSdk.getInstance().getUserLoggedIn().getProfileId() + "&idEmpresa=" + RadiotulSdk.getInstance().getCompanyId(),
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(final JSONObject response) {
+                        try {
+                            JSONArray jsonResult = response.getJSONArray("jsonResult");
+
+                            if (jsonResult.length() == 0) {
+                                callbacks.onSuccess(Collections.<Event>emptyList());
+                                return;
+                            }
+
+                            List<Event> events = new ArrayList<>();
+
+                            for (int j = 0; j < jsonResult.length(); j++) {
+                                JSONObject item = (JSONObject) jsonResult.get(j);
+                                Event event = new Event();
+                                event.setName(item.getString("NombreEvento"));
+                                event.setId(item.getInt("Id"));
+                                events.add(event);
+                            }
+                            callbacks.onSuccess(events);
+                        } catch (JSONException e) {
+                            Log.e(TAG, e);
+                            callbacks.onRequestError();
+                            callbacks.onError();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, error);
+                callbacks.onUnexpectedError();
+                callbacks.onError();
+            }
+        });
+
+        RadiotulSdk.getInstance().startRequest(request);
+    }
+
+    public static void markWonEventsAsViwed(List<Event> events, final RadiotulResponse.SimpleCallback callbacks){
+
+        StringRequest request = new StringRequest(Request.Method.POST, Constants.MARK_WON_EVENTS_AS_VIWED+"?ids="+getStringIds(events),
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        callbacks.onSuccess();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        callbacks.onRequestError();
+                        callbacks.onError();
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+
+                return params;
+            }
+        };
+
+        RadiotulSdk.getInstance().startRequest(request);
+    }
+
+    private static String getStringIds(List<Event> events){
+        String ids = "";
+
+        for (Event event : events) {
+            //adding the first comma to be removed later
+            ids += ",";
+            ids += event.getId();
+        }
+        ids.replaceFirst(",", "");
+
+        return ids;
     }
 }

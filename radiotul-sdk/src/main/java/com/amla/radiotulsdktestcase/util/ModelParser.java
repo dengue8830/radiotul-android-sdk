@@ -93,7 +93,7 @@ public class ModelParser {
     public static Event toEvento(JSONObject joEvento) throws JSONException {
         Event event = new Event();
         event.setId(joEvento.getInt("Id"));
-        event.setTitle(joEvento.getString("Titulo"));
+        event.setName(joEvento.getString("Titulo"));
         event.setDescription(joEvento.getString("Descripcion"));
 
         if(tieneValor(joEvento, "NumeroConcursantes"))
