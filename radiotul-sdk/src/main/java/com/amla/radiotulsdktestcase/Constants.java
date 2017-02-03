@@ -17,6 +17,7 @@ public class Constants {
     public static final String GET_WEEK_SHOW_SCHEDULE_API = BASE_MOBILE_API_URL + "/GetProgramas";
     public static final String GET_EVENT_PRIZES = BASE_MOBILE_API_URL + "/GetPremiosEventos";
     public static final String GET_MY_WON_EVENTS = BASE_MOBILE_API_URL + "/GetEventosGanados";
+    public static final String EDIT_PROFILE_API = BASE_MOBILE_API_URL + "/EditarPerfil";
     public static final int AUDIENCE_USER_TYPE = 3;
     public static final int EVENT_TYPE_EVENTUAL = 1;
     public static final int EVENT_TYPE_GAME = 2;
