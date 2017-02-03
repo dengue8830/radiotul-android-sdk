@@ -3,7 +3,6 @@ package com.amla.radiotulsdktestcase.message;
 import com.amla.radiotulsdktestcase.Constants;
 import com.amla.radiotulsdktestcase.RadiotulResponse;
 import com.amla.radiotulsdktestcase.RadiotulSdk;
-import com.amla.radiotulsdktestcase.event.CommentType;
 import com.amla.radiotulsdktestcase.util.Log;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -18,6 +17,8 @@ import java.util.Map;
  */
 
 public class MessageAPI {
+    private static final String TAG = MessageAPI.class.getName();
+
     /**
      * Send a message to the show with the logged user as sender
      * @param showId
@@ -47,7 +48,7 @@ public class MessageAPI {
                 params.put("idUsuario", "" + RadiotulSdk.getInstance().getUserLoggedIn().getId());
                 params.put("idEmpresa", "" + RadiotulSdk.getInstance().getCompanyId());
                 params.put("idPrograma", "" + showId);
-                params.put("idTipoMensaje", "" + CommentType.ID_OTRO);
+                params.put("idTipoMensaje", "" + Constants.COMMENT_TYPE_OTHER);
                 params.put("comentario", message);
 
                 return params;
@@ -55,5 +56,38 @@ public class MessageAPI {
         };
 
         RadiotulSdk.getInstance().startRequest(postRequest);
+    }
+
+    public static void sendMessageToCompany(final String message, final int commentType, final RadiotulResponse.SimpleCallback callbacks){
+        StringRequest request = new StringRequest(Request.Method.POST, Constants.SEND_MESSAGE_API,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        callbacks.onSuccess();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e(TAG, error);
+                        callbacks.onRequestError();
+                        callbacks.onError();
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("idUsuario", String.valueOf(RadiotulSdk.getInstance().getUserLoggedIn().getId()));
+                params.put("idEmpresa", String.valueOf(RadiotulSdk.getInstance().getCompanyId()));
+                params.put("idPrograma", "-1");
+                params.put("idTipoMensaje", String.valueOf(commentType));
+                params.put("comentario", message);
+
+                return params;
+            }
+        };
+
+        RadiotulSdk.getInstance().startRequest(request);
     }
 }

@@ -18,4 +18,7 @@ public class Constants {
     public static final int AUDIENCE_USER_TYPE = 3;
     public static final int EVENT_TYPE_EVENTUAL = 1;
     public static final int EVENT_TYPE_GAME = 2;
+    public static final int COMMENT_TYPE_GOOD = 1;
+    public static final int COMMENT_TYPE_BAD = 2;
+    public static final int COMMENT_TYPE_OTHER = 3;
 }

@@ -1,5 +1,7 @@
 package com.amla.radiotulsdktestcase.event;
 
+import com.amla.radiotulsdktestcase.Constants;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,10 +12,6 @@ import java.util.List;
 public class CommentType {
     private int id;
     private String tipo;
-
-    public static final int ID_BUENOS_COMENTARIOS = 1;
-    public static final int ID_QUEJAS = 2;
-    public static final int ID_OTRO = 3;
 
     public int getId() {
         return id;
@@ -39,9 +37,9 @@ public class CommentType {
     public static List<CommentType> getTipoComentarios() {
         List<CommentType> tiposComentarios = new ArrayList<>();
         //Primero esta opcion, porque las otras deben ser elegidas expresamente porque son un mayor impacto en las estadisticas
-        tiposComentarios.add(new CommentType(ID_OTRO, "Otro"));
-        tiposComentarios.add(new CommentType(ID_BUENOS_COMENTARIOS, "Buenos Comentarios"));
-        tiposComentarios.add(new CommentType(ID_QUEJAS, "Quejas"));
+        tiposComentarios.add(new CommentType(Constants.COMMENT_TYPE_GOOD, "Buenos Comentarios"));
+        tiposComentarios.add(new CommentType(Constants.COMMENT_TYPE_BAD, "Quejas"));
+        tiposComentarios.add(new CommentType(Constants.COMMENT_TYPE_OTHER, "Otro"));
         return tiposComentarios;
     }
 
