@@ -37,8 +37,12 @@ public class RadiotulResponse {
         public void onEmailAlreadyExists();
     }
 
-    public interface Events extends RadioTulCallback {
+    public interface GetEvents extends RadioTulCallback {
         /** Called when a response is received and parsed succefully */
         public void onSuccess(List<Event> events);
+    }
+
+    public interface SignUpOnEvent extends RadioTulCallback {
+        public void onSuccess();
     }
 }

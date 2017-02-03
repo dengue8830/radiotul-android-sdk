@@ -7,9 +7,10 @@ package com.amla.radiotulsdk;
 public class Constants {
     public static final String SERVER_URL = "https://radiotul.com";
     public static final String BASE_MOBILE_API_URL = SERVER_URL+"/Apis/ApiMobile";
-    public static final String API_SIGN_IN = BASE_MOBILE_API_URL + "/IniciarSesion";
-    public static final String API_SIGN_UP = BASE_MOBILE_API_URL + "/RegistrarUsuario";
-    public static final String API_GET_EVENTS = BASE_MOBILE_API_URL + "/GetEventos";
+    public static final String SIGN_IN_API = BASE_MOBILE_API_URL + "/IniciarSesion";
+    public static final String SIGN_UP_API = BASE_MOBILE_API_URL + "/RegistrarUsuario";
+    public static final String GET_EVENTS_API = BASE_MOBILE_API_URL + "/GetEventos";
+    public static final String SIGN_UP_ON_EVENT_API = BASE_MOBILE_API_URL + "/ParticiparEvento";
     public static final int AUDIENCE_USER_TYPE = 3;
     public static final int EVENT_TYPE_EVENTUAL = 1;
     public static final int EVENT_TYPE_GAME = 2;

@@ -32,7 +32,7 @@ public class Access {
      * @param signInCallbacks
      */
     public static void signIn(@NonNull String email, @NonNull String password, @NonNull final RadiotulResponse.SignIn signInCallbacks) {
-        String url = Constants.API_SIGN_IN
+        String url = Constants.SIGN_IN_API
                 + "?idEmpresa="
                 + RadiotulSdk.getInstance().getCompanyId()
                 + "&loginSocial="
@@ -101,7 +101,7 @@ public class Access {
                                                            final String phone,
                                                            final int phoneCompanyId) {
         //Primero nos intentamos loguear en radiotul
-        String url = Constants.API_SIGN_IN
+        String url = Constants.SIGN_IN_API
                 + "?idEmpresa="
                 + RadiotulSdk.getInstance().getCompanyId()
                 + "&loginSocial="
@@ -237,7 +237,7 @@ public class Access {
         StringBuilder urlGET = new StringBuilder();
 
         try {
-            urlGET.append(Constants.API_SIGN_UP)
+            urlGET.append(Constants.SIGN_UP_API)
                     .append("?idEmpresa=")
                     .append(RadiotulSdk.getInstance().getCompanyId())
                     .append("&loginSocial=")
