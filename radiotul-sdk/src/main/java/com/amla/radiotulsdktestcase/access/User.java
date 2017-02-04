@@ -5,15 +5,15 @@ package com.amla.radiotulsdktestcase.access;
  */
 
 public class User {
-    private int id;
+    private Long id;
     /** The id for the RadioTul's social login register */
-    private int radiotulSocialLoginId;
+    private Long radiotulSocialLoginId;
     /** The id of the social network user account */
     private String socialId;
     /** Token of the user's social network account */
     private String socialToken;
     /** The id of the profile on RadioTul account */
-    private int profileId;
+    private Long profileId;
     private String firstName;
     private String lastName;
     private String email;
@@ -30,7 +30,7 @@ public class User {
 
     public User(){}
 
-    public User(int id, int radiotulSocialLoginId, String socialId, String token, int profileId, String firstName, String lastName, String email, String password, String phone, String sex, String dni, String parsedBirthDay, String profilePictureUrl, String phoneCompany) {
+    public User(Long id, Long radiotulSocialLoginId, String socialId, String token, Long profileId, String firstName, String lastName, String email, String password, String phone, String sex, String dni, String parsedBirthDay, String profilePictureUrl, String phoneCompany) {
         this.id = id;
         this.radiotulSocialLoginId = radiotulSocialLoginId;
         this.socialId = socialId;
@@ -48,19 +48,19 @@ public class User {
         this.phoneCompany = phoneCompany;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public int getRadiotulSocialLoginId() {
+    public Long getRadiotulSocialLoginId() {
         return radiotulSocialLoginId;
     }
 
-    public void setRadiotulSocialLoginId(int radiotulSocialLoginId) {
+    public void setRadiotulSocialLoginId(Long radiotulSocialLoginId) {
         this.radiotulSocialLoginId = radiotulSocialLoginId;
     }
 
@@ -80,11 +80,11 @@ public class User {
         this.socialToken = socialToken;
     }
 
-    public int getProfileId() {
+    public Long getProfileId() {
         return profileId;
     }
 
-    public void setProfileId(int profileId) {
+    public void setProfileId(Long profileId) {
         this.profileId = profileId;
     }
 

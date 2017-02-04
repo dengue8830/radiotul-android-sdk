@@ -322,10 +322,10 @@ public class Access {
 
         JSONObject userJson = data.getJSONObject("jsonResult");
         User user = new User();
-        user.setId(userJson.getInt("Id"));
-        user.setRadiotulSocialLoginId(userJson.getInt("IdLoginSocial"));
+        user.setId(userJson.getLong("Id"));
+        user.setRadiotulSocialLoginId(userJson.getLong("IdLoginSocial"));
         user.setSocialId(userJson.getString("IdSocial"));
-        user.setProfileId(Integer.parseInt(userJson.getString("IdPerfil")));
+        user.setProfileId(userJson.getLong("IdPerfil"));
         user.setFirstName(userJson.getString("Nombre"));
         user.setLastName(userJson.getString("Apellido"));
         user.setEmail(userJson.getString("Email"));

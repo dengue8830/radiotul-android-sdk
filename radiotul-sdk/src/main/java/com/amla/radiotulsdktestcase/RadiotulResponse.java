@@ -1,6 +1,7 @@
 package com.amla.radiotulsdktestcase;
 
 import com.amla.radiotulsdktestcase.access.User;
+import com.amla.radiotulsdktestcase.company.Company;
 import com.amla.radiotulsdktestcase.event.Event;
 import com.amla.radiotulsdktestcase.event.Prize;
 import com.amla.radiotulsdktestcase.event.Show;
@@ -52,5 +53,9 @@ public class RadiotulResponse {
 
     public interface GetEventPrizes extends RadioTulCallback {
         public void onSuccess(List<Prize> prizes);
+    }
+
+    public interface GetCompanyData extends RadioTulCallback {
+        public void onSuccess(Company company);
     }
 }

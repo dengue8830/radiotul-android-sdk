@@ -1,11 +1,14 @@
 package com.amla.radiotulsdktestcase.util;
 
+import com.amla.radiotulsdktestcase.company.Company;
+import com.amla.radiotulsdktestcase.company.Feature;
+import com.amla.radiotulsdktestcase.company.Radio;
 import com.amla.radiotulsdktestcase.event.Event;
 import com.amla.radiotulsdktestcase.event.EventType;
-import com.amla.radiotulsdktestcase.event.PreguntaTrivia;
+import com.amla.radiotulsdktestcase.event.TriviaQuestion;
 import com.amla.radiotulsdktestcase.event.Prize;
 import com.amla.radiotulsdktestcase.event.Show;
-import com.amla.radiotulsdktestcase.event.RespuestaTrivia;
+import com.amla.radiotulsdktestcase.event.TriviaAnswer;
 import com.amla.radiotulsdktestcase.event.Trivia;
 
 import org.json.JSONArray;
@@ -52,7 +55,7 @@ public class ModelParser {
 
             Prize prize = new Prize();
 
-            prize.setId(joPremio.getInt("Id"));
+            prize.setId(joPremio.getLong("Id"));
             prize.setName(joPremio.getString("Nombre"));
             prize.setDescription(joPremio.getString("Descripcion"));
             prize.setPrizeStatus(estadoPremio);
@@ -94,15 +97,15 @@ public class ModelParser {
      */
     public static Event toEvent(JSONObject joEvento) throws JSONException {
         Event event = new Event();
-        event.setId(joEvento.getInt("Id"));
+        event.setId(joEvento.getLong("Id"));
         event.setName(joEvento.getString("Titulo"));
         event.setDescription(joEvento.getString("Descripcion"));
 
         if(hasValue(joEvento, "NumeroConcursantes"))
-            event.setContestantsCount(joEvento.getInt("NumeroConcursantes"));
+            event.setContestantsCount(joEvento.getLong("NumeroConcursantes"));
 
-        event.setType(getTipoEvento(joEvento));
-        event.setShows(getProgramas(joEvento));
+        event.setType(getEventType(joEvento));
+        event.setShows(getShows(joEvento));
         event.setTrivia(getTrivia(joEvento));
 
         if(hasValue(joEvento, "PremiosEvento"))
@@ -126,23 +129,23 @@ public class ModelParser {
         return event;
     }
 
-    public static List<Show> getProgramas(JSONObject joEvento) throws JSONException {
+    private static List<Show> getShows(JSONObject rawEvent) throws JSONException {
         List<Show> shows = new ArrayList<>();
 
-        if(!hasValue(joEvento, "ProgramasSeleccionado"))
+        if(!hasValue(rawEvent, "ProgramasSeleccionado"))
             return shows;
 
-        JSONArray jaProgramas = joEvento.getJSONArray("ProgramasSeleccionado");
+        JSONArray rawShows = rawEvent.getJSONArray("ProgramasSeleccionado");
 
-        for (int i = 0; i < jaProgramas.length(); i++) {
-            JSONObject joPrograma = jaProgramas.getJSONObject(i);
+        for (int i = 0; i < rawShows.length(); i++) {
+            JSONObject rawShow = rawShows.getJSONObject(i);
 
-            if (!joPrograma.getBoolean("Estado"))
+            if (!rawShow.getBoolean("Estado"))
                 continue;
 
             Show show = new Show();
-            show.setId(joPrograma.getLong("IdPrograma"));
-            show.setName(joPrograma.getString("NombrePrograma"));
+            show.setId(rawShow.getLong("IdPrograma"));
+            show.setName(rawShow.getString("NombrePrograma"));
 
             shows.add(show);
         }
@@ -150,20 +153,20 @@ public class ModelParser {
         return shows;
     }
 
-    public static EventType getTipoEvento(JSONObject joEvento) throws JSONException {
-        if(!hasValue(joEvento, "EventType"))
+    private static EventType getEventType(JSONObject rawEvent) throws JSONException {
+        if(!hasValue(rawEvent, "EventType"))
             return null;
 
-        JSONObject joTipoEvento = joEvento.getJSONObject("EventType");
+        JSONObject rawEventType = rawEvent.getJSONObject("EventType");
 
         EventType eventType = new EventType();
-        eventType.setId(joTipoEvento.getInt("Id"));
-        eventType.setName(joTipoEvento.getString("Nombre"));
+        eventType.setId(rawEventType.getLong("Id"));
+        eventType.setName(rawEventType.getString("Nombre"));
 
         return eventType;
     }
 
-    public static Trivia getTrivia(JSONObject joEvento) throws JSONException {
+    private static Trivia getTrivia(JSONObject joEvento) throws JSONException {
         if(!hasValue(joEvento, "Trivia"))
             return null;
 
@@ -173,40 +176,40 @@ public class ModelParser {
             return null;
 
         Trivia trivia = new Trivia();
-        trivia.setIdTrivia(jaTrivia.getJSONObject(0).getInt("Id"));
-        trivia.setIdTipoTrivia(jaTrivia.getJSONObject(0).getInt("IdTipoTrivia"));
+        trivia.setIdTrivia(jaTrivia.getJSONObject(0).getLong("Id"));
+        trivia.setTriviaTypeId(jaTrivia.getJSONObject(0).getLong("IdTipoTrivia"));
         trivia.setTitulo(jaTrivia.getJSONObject(0).getString("Titulo"));
 
-        List<PreguntaTrivia> preguntasTrivia = new ArrayList<>();
+        List<TriviaQuestion> preguntasTrivia = new ArrayList<>();
         JSONArray jsonPreguntas = jaTrivia.getJSONObject(0).getJSONArray("Preguntas");
 
         for (int i = 0; i < jsonPreguntas.length(); i++) {
             JSONObject jsonPregunta = jsonPreguntas.getJSONObject(i);
 
-            PreguntaTrivia pregunta = new PreguntaTrivia();
-            pregunta.setIdPregunta(jsonPregunta.getInt("Id"));
-            pregunta.setIdTrivia(jsonPregunta.getInt("IdTrivia"));
-            pregunta.setPregunta(jsonPregunta.getString("Pregunta"));
+            TriviaQuestion pregunta = new TriviaQuestion();
+            pregunta.setId(jsonPregunta.getLong("Id"));
+            pregunta.setTriviaId(jsonPregunta.getLong("IdTrivia"));
+            pregunta.setQuestionText(jsonPregunta.getString("Pregunta"));
 
-            List<RespuestaTrivia> respuestasTrivia = new ArrayList<>();
+            List<TriviaAnswer> respuestasTrivia = new ArrayList<>();
             JSONArray jsonRespuestas = jsonPregunta.getJSONArray("Respuesta");
 
             for (int j = 0; j < jsonRespuestas.length(); j++) {
                 JSONObject jsonRespuesta = jsonRespuestas.getJSONObject(j);
 
-                RespuestaTrivia respuesta = new RespuestaTrivia();
-                respuesta.setIdRespuesta(jsonRespuesta.getInt("Id"));
-                respuesta.setIdTrivia(jsonRespuesta.getInt("IdTrivia"));
-                respuesta.setRespuesta(jsonRespuesta.getString("Respuesta"));
-                respuesta.setEstadoCorrecto(jsonRespuesta.getBoolean("EstadoCorrecto"));
+                TriviaAnswer respuesta = new TriviaAnswer();
+                respuesta.setId(jsonRespuesta.getLong("Id"));
+                respuesta.setTriviaId(jsonRespuesta.getLong("IdTrivia"));
+                respuesta.setAnswerText(jsonRespuesta.getString("Respuesta"));
+                respuesta.setCorrect(jsonRespuesta.getBoolean("EstadoCorrecto"));
 
                 respuestasTrivia.add(respuesta);
             }
-            pregunta.setRespuestasTrivia(respuestasTrivia);
+            pregunta.setAnswers(respuestasTrivia);
 
             preguntasTrivia.add(pregunta);
         }
-        trivia.setPreguntasTrivia(preguntasTrivia);
+        trivia.setQuestions(preguntasTrivia);
 
         return trivia;
     }
@@ -229,5 +232,53 @@ public class ModelParser {
             show.setBeingBroadcastNow(joPrograma.getBoolean("Trasmitiendo"));
 
         return show;
+    }
+
+    public static Company toCompany(JSONObject response) throws JSONException{
+        JSONObject rawData = response.getJSONArray("JsonDatosEmpresa").getJSONObject(0);
+        Company company = new Company();
+        company.setId(rawData.getLong("Id"));
+        company.setName(rawData.getString("Nombre"));
+        company.setAdress(rawData.getString("Direccion"));
+        company.setMobilePhone(rawData.getString("TelefonoMovil"));
+        company.setLandlinePhone(rawData.getString("TelefonoFijo"));
+
+        if(hasValue(rawData, "JsonRadios")){
+            List<Radio> radios = new ArrayList<>();
+            JSONArray rawRadios = rawData.getJSONArray("JsonRadios");
+
+            for (int i = 0 ; i < rawRadios.length() ; i++){
+                JSONObject item = rawRadios.getJSONObject(i);
+                Radio radio = new Radio();
+                radio.setId(item.getLong("Id"));
+                radio.setName(item.getString("Nombre"));
+                radio.setUrlStreaming(item.getString("UrlStreaming"));
+                radio.setActive(item.getBoolean("Estado"));
+                radio.setPhone(item.getString("Telefono"));
+                radio.setPhoneWithWhatsapp(item.getString("TelefonoWhatsApp"));
+                radio.setTypeId(item.getLong("IdTipoRadio"));
+                radio.setTypeLabel(item.getString("TipoRadio"));
+
+                radios.add(radio);
+            }
+            company.setRadios(radios);
+        }
+
+        if(hasValue(rawData, "funcionalidades")){
+            List<Feature> features = new ArrayList<>();
+            JSONArray rawFeatures = rawData.getJSONArray("funcionalidades");
+
+            for (int i = 0 ; i < rawFeatures.length() ; i++){
+                JSONObject item = rawFeatures.getJSONObject(i);
+                Feature feature = new Feature();
+                feature.setCodename(item.getString("NombreClave"));
+                feature.setActive(item.getBoolean("Activo"));
+
+                features.add(feature);
+            }
+            company.setFeatures(features);
+        }
+
+        return company;
     }
 }

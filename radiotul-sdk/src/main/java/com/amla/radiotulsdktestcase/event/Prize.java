@@ -7,7 +7,7 @@ import java.util.List;
  */
 
 public class Prize {
-    private Integer id;
+    private Long id;
     private String name;
     private String description;
     private boolean active;
@@ -15,11 +15,11 @@ public class Prize {
     private boolean PrizeStatus;
     private List<String> pictures;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

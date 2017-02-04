@@ -17,7 +17,7 @@ public class ProfileAPI {
     public static final String TAG = ProfileAPI.class.getName();
 
     public static void updateProfile(String firstName, String lastName, String sex, String dni,
-                                     int phoneCompanyId, String phone, String parsedBirthDay, final RadiotulResponse.SimpleCallback callbacks){
+                                     long phoneCompanyId, String phone, String parsedBirthDay, final RadiotulResponse.SimpleCallback callbacks){
         String urlApiEditar = Constants.EDIT_PROFILE_API
                 + "?idPerfil=" + RadiotulSdk.getInstance().getUserLoggedIn().getProfileId()
                 + "&nombre=" + firstName

@@ -35,7 +35,7 @@ public class EventsAPI {
      * @param radioId
      * @param callbacks
      */
-    public static void getEvents(int radioId, final RadiotulResponse.GetEvents callbacks){
+    public static void getEvents(long radioId, final RadiotulResponse.GetEvents callbacks){
         final JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
                 Constants.GET_EVENTS_API + "?id=" + radioId + "&idPerfil=" + RadiotulSdk.getInstance().getUserLoggedIn().getProfileId(),
                 null,
@@ -67,7 +67,7 @@ public class EventsAPI {
      * @param eventId
      * @param callbacks
      */
-    public static void signUpOnEvent(final int eventId, final RadiotulResponse.SimpleCallback callbacks) {
+    public static void signUpOnEvent(final long eventId, final RadiotulResponse.SimpleCallback callbacks) {
         StringRequest postRequest = new StringRequest(Request.Method.POST, Constants.SIGN_UP_ON_EVENT_API,
                 new Response.Listener<String>() {
                     @Override
@@ -119,10 +119,11 @@ public class EventsAPI {
                             List<Event> events = new ArrayList<>();
 
                             for (int j = 0; j < jsonResult.length(); j++) {
+                                //Se envio con un formato diferente, no puede usarse el que esta en ModelParser
                                 JSONObject item = (JSONObject) jsonResult.get(j);
                                 Event event = new Event();
                                 event.setName(item.getString("NombreEvento"));
-                                event.setId(item.getInt("Id"));
+                                event.setId(item.getLong("Id"));
                                 events.add(event);
                             }
                             callbacks.onSuccess(events);

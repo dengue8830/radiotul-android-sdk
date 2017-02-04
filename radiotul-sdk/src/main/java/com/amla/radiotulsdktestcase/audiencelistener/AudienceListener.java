@@ -37,12 +37,12 @@ public class AudienceListener {
     private static boolean abort;
     private static final String TAG = AudienceListener.class.getName();
     private static final String USER_TYPE_APP = "APP";
-    private static int mRadioId;
+    private static long mRadioId;
 
     /**
      * Prepara la conexion
      */
-    public static void init(String email, int idUsuario) throws RadiotulNotInitializedException{
+    public static void init(String email, long idUsuario) throws RadiotulNotInitializedException{
         if(!RadiotulSdk.isInitialized())
             throw new RadiotulNotInitializedException("The sdk mudt be initialized first!");
 
@@ -193,7 +193,7 @@ public class AudienceListener {
     /**
      * Inica la comunicacion, al conectarse incrementara la audiencia
      */
-    public static void start(Integer radioId) {
+    public static void start(long radioId) {
         if(!initialized)
             //TODO: Replace with AudienceListenerNotInitializedException but must be catcheable by runneable
             throw new RuntimeException("You must initialize the listener first!");

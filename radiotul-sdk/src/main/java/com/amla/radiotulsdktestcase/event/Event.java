@@ -11,7 +11,7 @@ import java.util.List;
 
 public class Event {
 
-    private Integer id;
+    private Long id;
     private String name;
     private String description;
     private EventType type;
@@ -22,7 +22,7 @@ public class Event {
      *  wich is related to our model on server :P */
     private Trivia trivia;
     /** The amount of the contestants in the event*/
-    private Integer contestantsCount;
+    private Long contestantsCount;
     /** Flag to know if i am participating */
     private boolean iAmParticipating;
     /** Parsed date when the event was won*/
@@ -30,11 +30,11 @@ public class Event {
     /** Amount of seconds remaining to finish the event*/
     private long secondsRemaining;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -90,11 +90,11 @@ public class Event {
         this.shows = shows;
     }
 
-    public Integer getContestantsCount() {
+    public Long getContestantsCount() {
         return contestantsCount;
     }
 
-    public void setContestantsCount(Integer contestantsCount) {
+    public void setContestantsCount(Long contestantsCount) {
         this.contestantsCount = contestantsCount;
     }
 

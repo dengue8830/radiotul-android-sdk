@@ -4,25 +4,25 @@ import java.util.List;
 
 public class Trivia {
 
-    private Integer idTrivia;
-    private Integer idTipoTrivia;
+    private Long idTrivia;
+    private Long triviaTypeId;
     private String titulo;
-    private List<PreguntaTrivia> preguntasTrivia;
+    private List<TriviaQuestion> questions;
 
-    public Integer getIdTrivia() {
+    public Long getIdTrivia() {
         return idTrivia;
     }
 
-    public void setIdTrivia(Integer idTrivia) {
+    public void setIdTrivia(Long idTrivia) {
         this.idTrivia = idTrivia;
     }
 
-    public Integer getIdTipoTrivia() {
-        return idTipoTrivia;
+    public Long getTriviaTypeId() {
+        return triviaTypeId;
     }
 
-    public void setIdTipoTrivia(Integer idTipoTrivia) {
-        this.idTipoTrivia = idTipoTrivia;
+    public void setTriviaTypeId(Long triviaTypeId) {
+        this.triviaTypeId = triviaTypeId;
     }
 
     public String getTitulo() {
@@ -33,11 +33,11 @@ public class Trivia {
         this.titulo = titulo;
     }
 
-    public List<PreguntaTrivia> getPreguntasTrivia() {
-        return preguntasTrivia;
+    public List<TriviaQuestion> getQuestions() {
+        return questions;
     }
 
-    public void setPreguntasTrivia(List<PreguntaTrivia> preguntasTrivia) {
-        this.preguntasTrivia = preguntasTrivia;
+    public void setQuestions(List<TriviaQuestion> questions) {
+        this.questions = questions;
     }
 }

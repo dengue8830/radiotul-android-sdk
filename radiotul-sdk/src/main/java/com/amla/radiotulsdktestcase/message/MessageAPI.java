@@ -58,7 +58,7 @@ public class MessageAPI {
         RadiotulSdk.getInstance().startRequest(postRequest);
     }
 
-    public static void sendMessageToCompany(final String message, final int commentType, final RadiotulResponse.SimpleCallback callbacks){
+    public static void sendMessageToCompany(final String message, final long commentType, final RadiotulResponse.SimpleCallback callbacks){
         StringRequest request = new StringRequest(Request.Method.POST, Constants.SEND_MESSAGE_API,
                 new Response.Listener<String>() {
                     @Override
