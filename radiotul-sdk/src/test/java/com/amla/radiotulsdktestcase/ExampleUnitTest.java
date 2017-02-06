@@ -1,7 +1,9 @@
 package com.amla.radiotulsdktestcase;
 
-import com.amla.radiotulsdktestcase.access.Access;
-import com.amla.radiotulsdktestcase.access.User;
+import com.amla.radiotulsdk.RadiotulResponse;
+import com.amla.radiotulsdk.RadiotulSdk;
+import com.amla.radiotulsdk.access.Access;
+import com.amla.radiotulsdk.access.User;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
