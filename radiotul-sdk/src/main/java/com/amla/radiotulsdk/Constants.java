@@ -27,4 +27,7 @@ public class Constants {
     public static final int COMMENT_TYPE_GOOD = 1;
     public static final int COMMENT_TYPE_BAD = 2;
     public static final int COMMENT_TYPE_OTHER = 3;
+    public static final int PHONE_COMPANY_PERSONAL = 1;
+    public static final int PHONE_COMPANY_CLARO = 2;
+    public static final int PHONE_COMPANY_MOVISTAR = 3;
 }

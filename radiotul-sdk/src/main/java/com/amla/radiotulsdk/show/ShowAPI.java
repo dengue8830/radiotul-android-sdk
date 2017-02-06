@@ -41,7 +41,7 @@ public class ShowAPI {
                     public void onResponse(JSONObject response) {
                         try {
                             JSONArray rawSchedule = response.length() < 1 ? new JSONArray() : response.getJSONArray("Semana");
-                            List<List> schedule = new ArrayList<>();
+                            List<List<Show>> schedule = new ArrayList<>();
 
                             //Recorremos los dias segun la posicion de array
                             for (int day = 0; day < 7; day++) {
@@ -55,8 +55,9 @@ public class ShowAPI {
                                     showsOfOneDay.add(ModelParser.toShow(item));
                                 }
                                 schedule.add(showsOfOneDay);
-                                callbacks.onSuccess(schedule);
                             }
+
+                            callbacks.onSuccess(schedule);
                         } catch (JSONException e) {
                             Log.e(TAG, e);
                             callbacks.onUnexpectedError();

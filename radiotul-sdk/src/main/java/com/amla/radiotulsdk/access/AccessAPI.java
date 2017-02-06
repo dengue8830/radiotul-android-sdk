@@ -22,8 +22,8 @@ import java.net.URLEncoder;
  * Created by dengue8830 on 2/2/17.
  */
 
-public class Access {
-    private static final String TAG = Access.class.getName();
+public class AccessAPI {
+    private static final String TAG = AccessAPI.class.getName();
 
     /**
      * SignIn to RadioTul
@@ -84,7 +84,7 @@ public class Access {
      * @param socialToken
      * @param sex
      * @param dni
-     * @param parsedBirthday
+     * @param parsedBirthday format yyyy-MM-dd example: 2000-04-25
      * @param password
      * @param phone
      * @param phoneCompanyId
@@ -182,7 +182,7 @@ public class Access {
      * @param lastName
      * @param sex
      * @param dni
-     * @param parsedBirthday
+     * @param parsedBirthday format yyyy-MM-dd example: 2000-04-25
      * @param email
      * @param password
      * @param phone
@@ -214,7 +214,7 @@ public class Access {
      * @param lastName
      * @param sex
      * @param dni
-     * @param parsedBirthday fomrmat: yyyy-MM-dd
+     * @param parsedBirthday format yyyy-MM-dd example: 2000-04-25
      * @param email
      * @param password
      * @param phone

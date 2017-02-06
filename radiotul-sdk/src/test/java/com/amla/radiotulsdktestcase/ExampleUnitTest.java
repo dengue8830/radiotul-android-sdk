@@ -2,7 +2,7 @@ package com.amla.radiotulsdktestcase;
 
 import com.amla.radiotulsdk.RadiotulResponse;
 import com.amla.radiotulsdk.RadiotulSdk;
-import com.amla.radiotulsdk.access.Access;
+import com.amla.radiotulsdk.access.AccessAPI;
 import com.amla.radiotulsdk.access.User;
 
 import org.junit.Test;
@@ -31,7 +31,7 @@ public class ExampleUnitTest {
     @Test
     public void signIn(){
         RadiotulSdk.initialize(ShadowApplication.getInstance().getApplicationContext(), "xxx", "xx", 2, true);
-        Access.signIn("prueba@prueba.com", "admin", new RadiotulResponse.SignIn() {
+        AccessAPI.signIn("prueba@prueba.com", "admin", new RadiotulResponse.SignIn() {
             @Override
             public void onSuccess(User userSignedIn) {
                 fail("onSuccess");

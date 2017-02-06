@@ -25,7 +25,7 @@ public class MessageAPI {
      * @param message
      * @param callbacks
      */
-    private void sendMessageToShow(final long showId, final String message, final RadiotulResponse.SimpleCallback callbacks) {
+    public static void sendMessageToShow(final long showId, final String message, final RadiotulResponse.SimpleCallback callbacks) {
         StringRequest postRequest = new StringRequest(Request.Method.POST, Constants.SEND_MESSAGE_API,
                 new Response.Listener<String>() {
                     @Override

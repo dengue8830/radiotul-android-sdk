@@ -4,6 +4,7 @@ import com.amla.radiotulsdk.access.User;
 import com.amla.radiotulsdk.company.Company;
 import com.amla.radiotulsdk.event.Event;
 import com.amla.radiotulsdk.event.Prize;
+import com.amla.radiotulsdk.event.Show;
 
 import java.util.List;
 
@@ -47,7 +48,7 @@ public class RadiotulResponse {
     }
 
     public interface GetWeekShowSchedule extends RadioTulCallback {
-        public void onSuccess(List<List> weekSchedule);
+        public void onSuccess(List<List<Show>> weekSchedule);
     }
 
     public interface GetEventPrizes extends RadioTulCallback {

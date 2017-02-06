@@ -16,6 +16,17 @@ import com.android.volley.toolbox.StringRequest;
 public class ProfileAPI {
     public static final String TAG = ProfileAPI.class.getName();
 
+    /**
+     * Update the logged user's profile data
+     * @param firstName
+     * @param lastName
+     * @param sex
+     * @param dni
+     * @param phoneCompanyId
+     * @param phone
+     * @param parsedBirthDay format yyyy-MM-dd example: 2000-04-25
+     * @param callbacks
+     */
     public static void updateProfile(String firstName, String lastName, String sex, String dni,
                                      long phoneCompanyId, String phone, String parsedBirthDay, final RadiotulResponse.SimpleCallback callbacks){
         String urlApiEditar = Constants.EDIT_PROFILE_API

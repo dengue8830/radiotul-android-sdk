@@ -27,8 +27,8 @@ import java.util.Map;
  * Wrapper class to manage the API request and responses
  */
 
-public class EventsAPI {
-    public static final String TAG = EventsAPI.class.getName();
+public class EventAPI {
+    public static final String TAG = EventAPI.class.getName();
 
     /**
      * Just that, get the radio's events
@@ -156,6 +156,14 @@ public class EventsAPI {
      */
     public static void markWonEventsAsViwed(List<Event> events, final RadiotulResponse.SimpleCallback callbacks){
 
+        if(events == null)
+            throw new IllegalArgumentException("Events can't be null");
+
+        if(events.isEmpty()){
+            callbacks.onSuccess();
+            return;
+        }
+
         StringRequest request = new StringRequest(Request.Method.POST, Constants.MARK_MY_WON_EVENTS_AS_VIWED +"?ids="+getStringIds(events),
                 new Response.Listener<String>() {
                     @Override
@@ -195,9 +203,8 @@ public class EventsAPI {
             ids += ",";
             ids += event.getId();
         }
-        ids.replaceFirst(",", "");
 
-        return ids;
+        return ids.replaceFirst(",", "");
     }
 
     /**
