@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
         Log.i("url", Constants.SERVER_URL);
 
-        if(Constants.SERVER_URL.equals("https://radiotul.com/"))
+        if(Constants.SERVER_URL.equals("https://radiotul.com/") || Constants.SERVER_URL.equals("https://radiotul.com"))
             throw new RuntimeException("GUARDA GIL, ESTAS PROBANDO CONTRA PROD");
 
         noSocialsignUp();

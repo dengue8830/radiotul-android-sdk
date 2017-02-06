@@ -4,7 +4,7 @@ apply plugin: 'com.jfrog.bintray'
 
 ext {
     bintrayRepo = 'radiotul'
-    bintrayName = 'radiotul-sdk'
+    bintrayName = 'radiotul-android-sdk'
 
     publishedGroupId = 'com.amla'
     libraryName = 'RadiotulSdk'
@@ -15,7 +15,7 @@ ext {
     siteUrl = 'https://github.com/dengue8830/radiotul-android-sdk'
     gitUrl = 'https://github.com/dengue8830/radiotul-android-sdk.git'
 
-    libraryVersion = '0.1.0'
+    libraryVersion = '1.0.0'
 
     developerId = 'dengue8830'
     developerName = 'David Rearte'
@@ -40,11 +40,11 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "SERVER_URL_VALUE", "\"http://radiotultest.azurewebsites.net\""
+            buildConfigField "String", "SERVER_URL_VALUE", "\"https://radiotul.com\""
         }
 
         debug {
-            buildConfigField "String", "SERVER_URL_VALUE", "\"http://radiotultest.azurewebsites.net\""
+            buildConfigField "String", "SERVER_URL_VALUE", "\"https://radiotul.com\""
         }
     }
 }
