@@ -42,7 +42,7 @@ public class AudienceListener {
     /**
      * Prepara la conexion
      */
-    public static void init(String email, long idUsuario) throws RadiotulNotInitializedException{
+    public static void init() throws RadiotulNotInitializedException{
         if(!RadiotulSdk.isInitialized())
             throw new RadiotulNotInitializedException("The sdk mudt be initialized first!");
 
@@ -53,13 +53,15 @@ public class AudienceListener {
             return;
 
         initialized = true;
+    }
 
+    private static void prepareStart(){
         StringBuilder sbQueryString = new StringBuilder();
         sbQueryString
                 .append("&email=")
-                .append(email)
+                .append(RadiotulSdk.getInstance().getUserSignedIn().getEmail())
                 .append("&idUsuario=")
-                .append(idUsuario)
+                .append(RadiotulSdk.getInstance().getUserSignedIn().getId())
                 .append("&tipoUsuario=")
                 .append(USER_TYPE_APP)
                 .append("&idEmpresa=")
@@ -201,6 +203,7 @@ public class AudienceListener {
         mRadioId = radioId;
         tryReconnect = true;
         abort = false;
+        prepareStart();
         //Este metodo ya controla que no se pueda dar start varias veces seguidas o si ya esta conectado
         mHubConnection.start();
     }
