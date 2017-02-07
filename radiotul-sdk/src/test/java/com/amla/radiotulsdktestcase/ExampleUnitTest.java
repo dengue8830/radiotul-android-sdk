@@ -1,5 +1,6 @@
 package com.amla.radiotulsdktestcase;
 
+import com.amla.radiotulsdk.BuildConfig;
 import com.amla.radiotulsdk.RadiotulResponse;
 import com.amla.radiotulsdk.RadiotulSdk;
 import com.amla.radiotulsdk.access.AccessAPI;

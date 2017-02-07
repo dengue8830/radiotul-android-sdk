@@ -1,7 +1,5 @@
 package com.amla.radiotulsdk;
 
-import com.amla.radiotulsdktestcase.BuildConfig;
-
 /**
  * Created by dengue8830 on 1/31/17.
  */
