@@ -22,7 +22,7 @@ public class CompanyAPI {
 
     /**
      * Get the complete data of the company
-     * @param callbacks
+     * @param callbacks the callbacks
      */
     public static void getCompanyData(final RadiotulResponse.GetCompanyData callbacks){
         final JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,

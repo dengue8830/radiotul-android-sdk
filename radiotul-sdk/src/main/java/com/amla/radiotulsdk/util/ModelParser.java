@@ -91,40 +91,40 @@ public class ModelParser {
 
     /**
      * Convierte el json de evento al modelo de evento con el arbol completo
-     * @param joEvento
-     * @return
-     * @throws JSONException
+     * @param rawEvent the server response
+     * @return the event
+     * @throws JSONException the exception
      */
-    public static Event toEvent(JSONObject joEvento) throws JSONException {
+    public static Event toEvent(JSONObject rawEvent) throws JSONException {
         Event event = new Event();
-        event.setId(joEvento.getLong("Id"));
-        event.setName(joEvento.getString("Titulo"));
-        event.setDescription(joEvento.getString("Descripcion"));
+        event.setId(rawEvent.getLong("Id"));
+        event.setName(rawEvent.getString("Titulo"));
+        event.setDescription(rawEvent.getString("Descripcion"));
 
-        if(hasValue(joEvento, "NumeroConcursantes"))
-            event.setContestantsCount(joEvento.getLong("NumeroConcursantes"));
+        if(hasValue(rawEvent, "NumeroConcursantes"))
+            event.setContestantsCount(rawEvent.getLong("NumeroConcursantes"));
 
-        event.setType(getEventType(joEvento));
-        event.setShows(getShows(joEvento));
-        event.setTrivia(getTrivia(joEvento));
+        event.setType(getEventType(rawEvent));
+        event.setShows(getShows(rawEvent));
+        event.setTrivia(getTrivia(rawEvent));
 
-        if(hasValue(joEvento, "PremiosEvento"))
-            event.setPrizes(getPrizes(joEvento.getJSONArray("PremiosEventos")));
+        if(hasValue(rawEvent, "PremiosEvento"))
+            event.setPrizes(getPrizes(rawEvent.getJSONArray("PremiosEventos")));
         else
             event.setPrizes(new ArrayList<Prize>());
 
-        if(hasValue(joEvento, "FechaGanado"))
-            event.setParsedWonDate(joEvento.getString("FechaGanado"));
+        if(hasValue(rawEvent, "FechaGanado"))
+            event.setParsedWonDate(rawEvent.getString("FechaGanado"));
 
 //        event.setExpanded(false);//necesario para el viewholder
 //        //Es para llevar un control local. Ya que del server vienen solo los vigentes
 //        event.setFinalizado(false);
 
-        if(hasValue(joEvento, "SegundosRestantes"))
-            event.setSecondsRemaining((long) Math.floor(joEvento.getDouble("SegundosRestantes")));
+        if(hasValue(rawEvent, "SegundosRestantes"))
+            event.setSecondsRemaining((long) Math.floor(rawEvent.getDouble("SegundosRestantes")));
 
-        if(hasValue(joEvento, "EstoyParticipando"))
-            event.setiAmParticipating(joEvento.getBoolean("EstoyParticipando"));
+        if(hasValue(rawEvent, "EstoyParticipando"))
+            event.setiAmParticipating(rawEvent.getBoolean("EstoyParticipando"));
 
         return event;
     }
@@ -227,26 +227,26 @@ public class ModelParser {
     /**
      * Cast a raw json to a Show model.
      *
-     * @param joPrograma
-     * @return
-     * @throws JSONException
+     * @param rawShow the server response for show
+     * @return the show
+     * @throws JSONException the exception
      */
-    public static Show toShow(JSONObject joPrograma) throws JSONException{
+    public static Show toShow(JSONObject rawShow) throws JSONException{
         Show show = new Show();
 
-        show.setId(joPrograma.getLong("IdPrograma"));
-        show.setName(joPrograma.getString("Nombre"));
-        show.setStartTime(joPrograma.getString("HoraInicio").substring(0, 5));
-        show.setEndTime(joPrograma.getString("HoraFin").substring(0, 5));
-        show.setDescription(joPrograma.getString("Descripcion"));
-        show.setFacebookUrl(joPrograma.getString("Facebook"));
-        show.setTwitterUrl(joPrograma.getString("Twitter"));
-        show.setPhone(joPrograma.isNull("TelefonoMovil") ? "" : joPrograma.getString("TelefonoMovil"));
-        show.setPhoneWithWhatsapp(joPrograma.getString("TelefonoConWhatsapp"));
-        show.setSpeakerName(joPrograma.getString("Locutor"));
+        show.setId(rawShow.getLong("IdPrograma"));
+        show.setName(rawShow.getString("Nombre"));
+        show.setStartTime(rawShow.getString("HoraInicio").substring(0, 5));
+        show.setEndTime(rawShow.getString("HoraFin").substring(0, 5));
+        show.setDescription(rawShow.getString("Descripcion"));
+        show.setFacebookUrl(rawShow.getString("Facebook"));
+        show.setTwitterUrl(rawShow.getString("Twitter"));
+        show.setPhone(rawShow.isNull("TelefonoMovil") ? "" : rawShow.getString("TelefonoMovil"));
+        show.setPhoneWithWhatsapp(rawShow.getString("TelefonoConWhatsapp"));
+        show.setSpeakerName(rawShow.getString("Locutor"));
 
-        if(hasValue(joPrograma, "Trasmitiendo"))
-            show.setBeingBroadcastNow(joPrograma.getBoolean("Trasmitiendo"));
+        if(hasValue(rawShow, "Trasmitiendo"))
+            show.setBeingBroadcastNow(rawShow.getBoolean("Trasmitiendo"));
 
         return show;
     }
@@ -255,9 +255,9 @@ public class ModelParser {
      * Cast a raw json to a Company model.
      * The list attributes as radios and features never will be null
      *
-     * @param response
-     * @return
-     * @throws JSONException
+     * @param response server json response
+     * @return The company
+     * @throws JSONException exception when the api has change and the code don't
      */
     public static Company toCompany(JSONObject response) throws JSONException{
         JSONObject rawData = response.getJSONArray("JsonDatosEmpresa").getJSONObject(0);

@@ -25,9 +25,12 @@ public class RadiotulSdk {
 
     /**
      * Main method of the sdk. Implements singleton pattern
-     * @param context
-     * @param clientId
-     * @param token
+     *
+     * @param context the context
+     * @param clientId the client id
+     * @param token the radiotul token for this app
+     * @param companyId the company id
+     * @param logEnabled true if you want log the events
      */
     public static void initialize(@NonNull Context context, @NonNull String clientId, @NonNull String token, long companyId, boolean logEnabled){
         if(mInstance == null)

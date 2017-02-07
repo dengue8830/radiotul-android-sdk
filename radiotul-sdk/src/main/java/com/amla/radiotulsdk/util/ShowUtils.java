@@ -20,8 +20,8 @@ public class ShowUtils {
      *
      * @param showId Show of wich we will get the schedule
      * @param weekSchedule The schedule of all the shows. The week schedule
-     * @return
-     * @throws JSONException
+     * @return the humanized representation of the schedule
+     * @throws JSONException the exception
      */
     public static String getShowSchedule(long showId, List<List> weekSchedule) throws JSONException{
         StringBuilder showSchedule = new StringBuilder();
@@ -50,8 +50,8 @@ public class ShowUtils {
 
     /**
      * Obtiene el nombre completo del dia de la semana segun la posicion del dia de la semana [0-6]
-     * @param day
-     * @return
+     * @param day the day on the range [0-6]
+     * @return the day of the week on spanish
      */
     public static String getDayOfTheWeekName(int day){
         switch (day){
@@ -77,7 +77,7 @@ public class ShowUtils {
     /**
      * Cast the calendar's day position to the tabs day's position.
      * Ej: In Calendar sunday is day 1, and in the array of tabs is 6
-     * @param calendarDayOfWeek
+     * @param calendarDayOfWeek the day of the Calendar constant
      * @return The tab's day position
      */
     public static int getDay(int calendarDayOfWeek) throws IllegalArgumentException{
