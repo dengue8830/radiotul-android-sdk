@@ -31,7 +31,7 @@ public class RadiotulSdk {
      */
     public static void initialize(@NonNull Context context, @NonNull String clientId, @NonNull String token, long companyId, boolean logEnabled){
         if(mInstance == null)
-            mInstance = new RadiotulSdk(context, "app.tierranuestra.radiotul", clientId, token, companyId, logEnabled);
+            mInstance = new RadiotulSdk(context, context.getPackageName(), clientId, token, companyId, logEnabled);
     }
 
     /**
