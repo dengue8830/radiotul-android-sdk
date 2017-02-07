@@ -32,8 +32,8 @@ public class EventAPI {
 
     /**
      * Just that, get the radio's events
-     * @param radioId
-     * @param callbacks
+     * @param radioId the radio to get their events
+     * @param callbacks the callbacks
      */
     public static void getEvents(long radioId, final RadiotulResponse.GetEvents callbacks){
         final JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
@@ -64,8 +64,8 @@ public class EventAPI {
 
     /**
      * SingUp the logged user to one event
-     * @param eventId
-     * @param callbacks
+     * @param eventId the event to suscribe
+     * @param callbacks the callbacks
      */
     public static void signUpOnEvent(final long eventId, final RadiotulResponse.SimpleCallback callbacks) {
         StringRequest postRequest = new StringRequest(Request.Method.POST, Constants.SIGN_UP_ON_EVENT_API,
@@ -99,7 +99,7 @@ public class EventAPI {
 
     /**
      * Gets the events that the logged user has won but he doesn't see yet
-     * @param callbacks
+     * @param callbacks the callbacks
      */
     public static void getMyNotSeenWonEvents(final RadiotulResponse.GetEvents callbacks) {
         final JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
@@ -152,7 +152,7 @@ public class EventAPI {
      * the list retreived from the api metioned above
      * TODO: poner el link a el metodo getMyNotSeenWonEvents
      * @param events to mark as seen
-     * @param callbacks
+     * @param callbacks the callbacks
      */
     public static void markWonEventsAsViwed(List<Event> events, final RadiotulResponse.SimpleCallback callbacks){
 
@@ -209,8 +209,8 @@ public class EventAPI {
 
     /**
      * Get the prizes of the event
-     * @param eventId
-     * @param callbacks
+     * @param eventId the event to get prizes
+     * @param callbacks the callbacks
      */
     public static void getEventPrizes(long eventId, final RadiotulResponse.GetEventPrizes callbacks){
         final JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
@@ -242,7 +242,7 @@ public class EventAPI {
 
     /**
      * Gets the events that the user has won
-     * @param callbacks
+     * @param callbacks the callbacks
      */
     public static void getMyWonEvents(final RadiotulResponse.GetEvents callbacks){
         final JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,

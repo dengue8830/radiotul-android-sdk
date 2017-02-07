@@ -27,9 +27,9 @@ public class AccessAPI {
 
     /**
      * SignIn to RadioTul
-     * @param email
-     * @param password
-     * @param signInCallbacks
+     * @param email the email of the user
+     * @param password the pass of the user
+     * @param signInCallbacks callbacks
      */
     public static void signIn(@NonNull String email, @NonNull String password, @NonNull final RadiotulResponse.SignIn signInCallbacks) {
         String url = Constants.SIGN_IN_API
@@ -76,18 +76,18 @@ public class AccessAPI {
     /**
      * Login to RadioTul with the response data provided from facebook login
      *
-     * @param email
-     * @param signInCallbacks
-     * @param firstName
-     * @param lastName
-     * @param socialId
-     * @param socialToken
-     * @param sex
-     * @param dni
+     * @param email of the user
+     * @param signInCallbacks of the user
+     * @param firstName of the user
+     * @param lastName of the user
+     * @param socialId of the user
+     * @param socialToken of the user
+     * @param sex of the user
+     * @param dni of the user
      * @param parsedBirthday format yyyy-MM-dd example: 2000-04-25
-     * @param password
-     * @param phone
-     * @param phoneCompanyId
+     * @param password of the user
+     * @param phone of the user
+     * @param phoneCompanyId of the user
      */
     public static void signInWithFacebookLoginResponseData(@NonNull final String email,
                                                            @NonNull final String password,
@@ -178,16 +178,16 @@ public class AccessAPI {
      * Use this if you are register the user from your own form
      * otherwise use signInWithFacebookLoginResponseData
      *
-     * @param firstName
-     * @param lastName
-     * @param sex
-     * @param dni
+     * @param firstName  of the user
+     * @param lastName of the user
+     * @param sex of the user
+     * @param dni of the user
      * @param parsedBirthday format yyyy-MM-dd example: 2000-04-25
-     * @param email
-     * @param password
-     * @param phone
-     * @param phoneCompanyId
-     * @param signUpCallbacks
+     * @param email of the user
+     * @param password of the user
+     * @param phone of the user
+     * @param phoneCompanyId of the user
+     * @param signUpCallbacks of the user
      */
     public static void noSocialsignUp(@NonNull String firstName,
                                       @NonNull String lastName,

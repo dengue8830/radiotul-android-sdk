@@ -18,14 +18,14 @@ public class ProfileAPI {
 
     /**
      * Update the logged user's profile data
-     * @param firstName
-     * @param lastName
-     * @param sex
-     * @param dni
-     * @param phoneCompanyId
-     * @param phone
+     * @param firstName first name of the user
+     * @param lastName last name of the user
+     * @param sex sex of the user
+     * @param dni dni of the user
+     * @param phoneCompanyId phone company of the user
+     * @param phone phone number of the user
      * @param parsedBirthDay format yyyy-MM-dd example: 2000-04-25
-     * @param callbacks
+     * @param callbacks callbacks
      */
     public static void updateProfile(String firstName, String lastName, String sex, String dni,
                                      long phoneCompanyId, String phone, String parsedBirthDay, final RadiotulResponse.SimpleCallback callbacks){

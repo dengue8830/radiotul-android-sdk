@@ -21,9 +21,9 @@ public class MessageAPI {
 
     /**
      * Send a message to the show with the logged user as sender
-     * @param showId
-     * @param message
-     * @param callbacks
+     * @param showId the show id
+     * @param message message to send
+     * @param callbacks callbacks
      */
     public static void sendMessageToShow(final long showId, final String message, final RadiotulResponse.SimpleCallback callbacks) {
         StringRequest postRequest = new StringRequest(Request.Method.POST, Constants.SEND_MESSAGE_API,

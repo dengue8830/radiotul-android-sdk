@@ -40,7 +40,8 @@ public class AudienceListener {
     private static long mRadioId;
 
     /**
-     * Prepara la conexion
+     * Initialize the listener
+     * @throws RadiotulNotInitializedException thrwos if is not initialized
      */
     public static void init() throws RadiotulNotInitializedException{
         if(!RadiotulSdk.isInitialized())
@@ -193,7 +194,8 @@ public class AudienceListener {
     }
 
     /**
-     * Inica la comunicacion, al conectarse incrementara la audiencia
+     * Begins the comunication, al begins increment the audience count
+     * @param radioId the radio to listen
      */
     public static void start(long radioId) {
         if(!initialized)

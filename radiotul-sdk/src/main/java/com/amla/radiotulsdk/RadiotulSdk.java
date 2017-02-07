@@ -39,7 +39,7 @@ public class RadiotulSdk {
 
     /**
      * The only way of get the instance of the sdk
-     * @return
+     * @return the sdk instance
      */
     public static RadiotulSdk getInstance(){
         return mInstance;
@@ -47,7 +47,7 @@ public class RadiotulSdk {
 
     /**
      * Helper to know if the sdk is initialized
-     * @return
+     * @return true if is initialized
      */
     public static boolean isInitialized(){
         return mInstance != null;
